@@ -23,3 +23,11 @@ export default {
   }
 }
 </script>
+<style lang="less">
+  .bg {
+    width: 200px;
+    height: 200px;
+    margin: auto;
+    background: url("~@public/logo1.png");
+  }
+</style>
