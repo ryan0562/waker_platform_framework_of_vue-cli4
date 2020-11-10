@@ -3,11 +3,10 @@
  * @Autor: Waker
  * @Date: 2020-11-10 17:06:05
  * @LastEditors: Waker
- * @LastEditTime: 2020-11-10 20:39:09
+ * @LastEditTime: 2020-11-10 20:54:09
 -->
 <template>
   <div class="home">
-    <img alt="Vue logo" src="@/assets/logo.png" />
     <img alt="Vue logo" src="@public/logo1.png" />
     <div class="bg"></div>
     <iconfont type="iconshangchuan" />
