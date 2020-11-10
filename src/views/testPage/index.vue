@@ -3,7 +3,7 @@
  * @Autor: Waker
  * @Date: 2020-11-10 17:06:05
  * @LastEditors: Waker
- * @LastEditTime: 2020-11-10 20:27:17
+ * @LastEditTime: 2020-11-10 20:39:09
 -->
 <template>
   <div class="home">
@@ -17,7 +17,9 @@
 <script>
 export default {
   name: "Home",
-  components: {
+  components: {},
+  created() {
+    console.log(process.env.NODE_ENV)
   },
 };
 </script>
