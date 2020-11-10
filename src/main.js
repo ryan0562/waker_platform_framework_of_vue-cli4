@@ -3,11 +3,11 @@
  * @Autor: Waker
  * @Date: 2020-11-10 17:05:10
  * @LastEditors: Waker
- * @LastEditTime: 2020-11-10 20:26:58
+ * @LastEditTime: 2020-11-10 20:53:32
  */
 import Vue from 'vue'
 import App from './App.vue'
-import router from './router'
+import router from './router/default'
 import store from './store'
 
 Vue.config.productionTip = false
