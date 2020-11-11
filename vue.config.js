@@ -3,18 +3,24 @@
  * @Autor: Waker
  * @Date: 2020-11-10 17:19:05
  * @LastEditors: Waker
- * @LastEditTime: 2020-11-11 11:08:45
+ * @LastEditTime: 2020-11-11 19:20:21
  */
 
 const path = require('path')
-// const webpack = require('webpack')
-
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const isProd = process.env.NODE_ENV === 'production'
 
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
 module.exports = {
   chainWebpack: config => {
+    /* 打包分析 */
+    if (isProd) {
+      config.plugin("webpack-report").use(BundleAnalyzerPlugin, [{
+        analyzerPort: 9998,
+      }]);
+    }
     /* 将image改成base64 start*/
     config.module
       .rule('images')
@@ -29,13 +35,14 @@ module.exports = {
       .set('@', resolve('./src'))
       .set('@public', resolve('./public'))
     /* 添加文件夹别名 end */
+    // config.resolve.symlinks(true)
   },
 
   devServer: {
     /* 域名设置 =>外部可访问 */
     host: '0.0.0.0',
     /* 默认用谷歌浏览器打开 */
-    open: 'Google Chrome',
+    // open: 'Google Chrome',
     /* 端口 */
     port: 9999,
     /* 代理 */
@@ -65,4 +72,12 @@ module.exports = {
     },
   },
 
+  // eslint-loader 是否在保存的时候检查
+  // lintOnSave: 'error',
+  // 生产环境 sourceMap
+  productionSourceMap: false,
+  css: {
+    // 是否构建样式地图，false 将提高构建速度   正式环境开启
+    sourceMap: isProd ? false : true,
+  }
 }

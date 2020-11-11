@@ -3,20 +3,17 @@
  * @Autor: Waker
  * @Date: 2020-11-10 17:06:05
  * @LastEditors: Waker
- * @LastEditTime: 2020-11-11 18:57:24
+ * @LastEditTime: 2020-11-11 18:26:29
 -->
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="@public/logo1.png" />
-    <div class="bg">22aa</div>
-    <div class="as"></div>
-    <iconfont type="iconshangchuan" />
+  <div class="icon">
+      <iconfont type="iconshangchuan" />
   </div>
 </template>
 
 <script>
 export default {
-  name: "home",
+  name: "icon",
   components: {},
   created() {
     console.log(process.env.NODE_ENV);
@@ -24,9 +21,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.as {
-  background: #000;
-  width: 1000px;
-  height: 50px;
+.icon {
+  font-size: 100px;
 }
 </style>

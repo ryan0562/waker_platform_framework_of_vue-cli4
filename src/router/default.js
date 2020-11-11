@@ -3,7 +3,7 @@
  * @Autor: Waker
  * @Date: 2020-11-10 17:06:05
  * @LastEditors: Waker
- * @LastEditTime: 2020-11-10 17:43:45
+ * @LastEditTime: 2020-11-11 18:22:30
  */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
@@ -14,10 +14,12 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/testPage/index.vue')
+    component: () => import('../views/testPage/index.vue')
+  },
+  {
+    path: '/icon',
+    name: 'icon',
+    component: () => import('../views/testPage/icon.vue')
   }
 ]
 

@@ -3,7 +3,7 @@
  * @Autor: Waker
  * @Date: 2020-11-10 17:05:10
  * @LastEditors: Waker
- * @LastEditTime: 2020-11-10 17:40:24
+ * @LastEditTime: 2020-11-11 17:57:14
 -->
 <template>
   <div id="app">
@@ -20,16 +20,4 @@
   color: #2c3e50;
 }
 
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>
