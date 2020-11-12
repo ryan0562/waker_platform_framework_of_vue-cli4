@@ -3,21 +3,59 @@
  * @Autor: Waker
  * @Date: 2020-11-10 17:19:05
  * @LastEditors: Waker
- * @LastEditTime: 2020-11-11 19:20:21
+ * @LastEditTime: 2020-11-12 17:07:24
  */
 
 const path = require('path')
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+/* 生产环境判断 */
+// 可以改成!==来查看CDN是否执行
 const isProd = process.env.NODE_ENV === 'production'
 
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
+
+const cdn = {
+  externals: {
+    // 业务使用示例: import [value] from [key]
+    vue: "Vue",
+    "vue-router": "VueRouter",
+    vuex: "Vuex",
+    axios: "axios",
+    "ant-design-vue": "antd",
+  },
+  // import的css不要放进来,externals无法过滤掉
+  css: [],
+  js: [
+    "//unpkg.com/vue@2.6.12/dist/vue.min.js",
+    "//unpkg.com/vue-router@3.4.9/dist/vue-router.min.js",
+    "//unpkg.com/vuex@3.5.1/dist/vuex.min.js",
+    "//unpkg.com/axios@0.21.0/dist/axios.min.js",
+    "//unpkg.com/ant-design-vue@1.7.2/dist/antd.min.js",
+  ]
+}
+
 module.exports = {
+  /* 过滤第三方包 减少打包体积  跟下面CDN配合*/
+  configureWebpack: config => {
+    config.externals = isProd ? cdn.externals : {}
+  },
   chainWebpack: config => {
+    /* 将CDN信息传到index.html内的htmlWebpackPlugin.options内 */
+    if (isProd) {
+      config.plugin("html").tap(args => {
+        // html中添加cdn
+        args[0].cdn = cdn;
+        return args;
+      });
+    }
+
     /* 打包分析 */
     if (isProd) {
       config.plugin("webpack-report").use(BundleAnalyzerPlugin, [{
+        analyzerMode: 'static',
+        openAnalyzer: false,
         analyzerPort: 9998,
       }]);
     }

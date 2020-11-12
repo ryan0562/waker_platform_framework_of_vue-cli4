@@ -3,7 +3,7 @@
  * @Autor: Waker
  * @Date: 2020-11-10 17:06:05
  * @LastEditors: Waker
- * @LastEditTime: 2020-11-11 18:22:30
+ * @LastEditTime: 2020-11-12 14:39:13
  */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
