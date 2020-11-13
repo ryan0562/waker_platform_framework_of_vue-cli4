@@ -3,7 +3,7 @@
  * @Autor: Waker
  * @Date: 2020-11-10 17:19:05
  * @LastEditors: Waker
- * @LastEditTime: 2020-11-12 17:24:29
+ * @LastEditTime: 2020-11-13 14:54:38
  */
 
 const path = require('path')
@@ -24,7 +24,8 @@ const cdn = {
     'vue-router': 'VueRouter',
     vuex: 'Vuex',
     axios: 'axios',
-    'ant-design-vue': 'antd'
+    'ant-design-vue': 'antd',
+    'vue-ls': 'vueLs',
   },
   // import的css不要放进来,externals无法过滤掉
   css: [],
@@ -33,7 +34,8 @@ const cdn = {
     '//unpkg.com/vue-router@3.4.9/dist/vue-router.min.js',
     '//unpkg.com/vuex@3.5.1/dist/vuex.min.js',
     '//unpkg.com/axios@0.21.0/dist/axios.min.js',
-    '//unpkg.com/ant-design-vue@1.7.2/dist/antd.min.js'
+    '//unpkg.com/ant-design-vue@1.7.2/dist/antd.min.js',
+    '//unpkg.com/vue-ls@3.2.1/dist/vue-ls.min.js',
   ]
 }
 
