@@ -3,28 +3,26 @@
  * @Autor: Waker
  * @Date: 2020-11-10 17:06:05
  * @LastEditors: Waker
- * @LastEditTime: 2020-11-12 14:39:13
+ * @LastEditTime: 2020-11-13 13:40:51
  */
-import Vue from 'vue'
-import VueRouter from 'vue-router'
 
-Vue.use(VueRouter)
 
-const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: () => import('../views/testPage/index.vue')
-  },
-  {
-    path: '/icon',
-    name: 'icon',
-    component: () => import('../views/testPage/icon.vue')
-  }
+const defaultRouterList = [{
+  path: '/',
+  name: 'home',
+  component: () => import('../views/testPage/index.vue')
+},
+{
+  path: '/login',
+  name: 'login',
+  component: () => import('../views/login/Login.vue')
+},
+{
+  path: '/icon',
+  name: 'icon',
+  component: () => import('../views/testPage/icon.vue')
+},
 ]
 
-const router = new VueRouter({
-  routes
-})
 
-export default router
+export default defaultRouterList

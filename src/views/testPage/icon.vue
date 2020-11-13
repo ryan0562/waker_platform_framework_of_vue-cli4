@@ -1,13 +1,14 @@
 <!--
  * @Description: 
  * @Autor: Waker
- * @Date: 2020-11-10 17:06:05
+ * @Date: 2020-11-12 19:56:26
  * @LastEditors: Waker
- * @LastEditTime: 2020-11-12 15:16:08
+ * @LastEditTime: 2020-11-13 11:15:14
 -->
+
 <template>
   <div class="icon">
-    <!-- <iconfont type="iconshangchuan" /> -->
+    <iconfont type="iconshangchuan" />
     <a-button type="dashed">Dashed</a-button>
     <a-slider id="test" :default-value="30"/>
   </div>
