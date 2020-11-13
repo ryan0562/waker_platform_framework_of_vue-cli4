@@ -3,7 +3,7 @@
  * @Autor: Waker
  * @Date: 2020-11-10 17:19:05
  * @LastEditors: Waker
- * @LastEditTime: 2020-11-13 14:54:38
+ * @LastEditTime: 2020-11-13 16:53:29
  */
 
 const path = require('path')
@@ -19,13 +19,13 @@ function resolve (dir) {
 
 const cdn = {
   externals: {
-    // 业务使用示例: import [value] from [key]
+    // 业务使用示例 => key:包名  value:库文件对应的全局对象字符串=>可以冲源码最后获取
     vue: 'Vue',
     'vue-router': 'VueRouter',
     vuex: 'Vuex',
     axios: 'axios',
     'ant-design-vue': 'antd',
-    'vue-ls': 'vueLs',
+    'vue-ls': 'VueStorage',
   },
   // import的css不要放进来,externals无法过滤掉
   css: [],
