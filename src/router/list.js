@@ -3,10 +3,11 @@
  * @Autor: Waker
  * @Date: 2020-11-10 17:06:05
  * @LastEditors: Waker
- * @LastEditTime: 2020-11-16 09:43:28
+ * @LastEditTime: 2020-11-16 10:22:01
  */
 
 export default {
+  /* 公共访问路由 */
   defaultRouterList : [
     // {
     //   path: '/login',
@@ -16,9 +17,10 @@ export default {
     // },
     {
       path: '/404',
-      component: () => import( '@/views/exception/404'), 
+      component: () => import( '@/views/error/404'), 
     },
   ],
+  /* 权限路由 */
   permissionRouterList : [{
     path: '/',
     name: 'home',
