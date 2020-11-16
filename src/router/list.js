@@ -3,7 +3,7 @@
  * @Autor: Waker
  * @Date: 2020-11-10 17:06:05
  * @LastEditors: Waker
- * @LastEditTime: 2020-11-13 21:28:51
+ * @LastEditTime: 2020-11-16 09:43:28
  */
 
 export default {
@@ -16,13 +16,13 @@ export default {
     // },
     {
       path: '/404',
-      component: () => import(/* webpackChunkName: "fail" */ '@/views/exception/404'),
+      component: () => import( '@/views/exception/404'), 
     },
   ],
   permissionRouterList : [{
     path: '/',
     name: 'home',
-    component: () => import('../views/home/index.vue')
+    component: () => import(/* webpackChunkName: "404" */'../views/home/index.vue')
   },
   // {
   //   path: '/login',
