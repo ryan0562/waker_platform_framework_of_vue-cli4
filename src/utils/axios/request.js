@@ -3,14 +3,14 @@
  * @Autor: Waker
  * @Date: 2020-06-08 20:05:28
  * @LastEditors: Waker
- * @LastEditTime: 2020-11-13 17:24:36
+ * @LastEditTime: 2020-11-16 20:59:30
  */
 import Vue from 'vue'
 import axios from 'axios'
 import store from '@/store'
 import notification from 'ant-design-vue/es/notification'
 import {VueAxios} from './axios'
-// import {ACCESS_TOKEN} from '@/store/mutation-types'
+import {ACCESS_TOKEN} from '@/store/mutation-types'
 // 创建 axios 实例
 const service = axios.create({
   baseURL: '', // api base_url

@@ -3,7 +3,7 @@
  * @Autor: Waker
  * @Date: 2020-11-10 17:05:10
  * @LastEditors: Waker
- * @LastEditTime: 2020-11-13 17:14:44
+ * @LastEditTime: 2020-11-17 10:57:19
  */
 import Vue from 'vue'
 import App from './App.vue'
@@ -16,6 +16,9 @@ import '@/style/index.less'
 // 注册后 Vue.$http and this.$http
 import {VueAxios} from './utils/axios/request'
 Vue.use(VueAxios)
+
+/* cookies */
+import '@/utils/cookies.js'
 
 /* vue.ls本地缓存持久化 */
 import '@/utils/vue_ls.js'
@@ -38,6 +41,10 @@ Vue.component('Iconfont', iconfont)
 
 /* 生成环境启动devtools */
 Vue.config.devtools = true;
+
+/* 正则全局 */
+import regExp from '@/utils/regExp'
+Vue.prototype.$regExp = regExp
 
 /* vue实例化 */
 const app = new Vue({

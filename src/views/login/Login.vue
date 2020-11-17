@@ -60,10 +60,8 @@
 </template>
 
 <script>
-// import { mapActions, mapGetters } from 'vuex'
-import { commonRegExp } from '@/utils/RegExp'
+import { mapActions, mapGetters } from 'vuex'
 import SelectEnterprise from './SelectEnterprise'
-import { getCookie } from '@/utils/util'
 import { getSmsCpatcha } from '@/api/login'
 
 export default {
@@ -97,7 +95,7 @@ export default {
       captchaFormRules: {
         phone: [
           { required: true, message: '请输入手机号' },
-          { pattern: commonRegExp.mobilePhone, message: '请输入正确的手机号', trigger: 'blur' },
+          { pattern: this.$regExp.phone, message: '请输入正确的手机号', trigger: 'blur' },
         ],
         captcha: [{ required: true, message: '请输入验证码', trigger: 'blur' }],
       },
@@ -107,7 +105,7 @@ export default {
     // ...mapGetters(['token']),
   },
   methods: {
-    // ...mapActions(['Login', 'SetCompanyId', 'GetRelatedCompanyList', 'GetCanUseSystemList']),
+    ...mapActions(['Login']),
     toggleLoginType () {
       this.loginType = this.loginType === 'password' ? 'captcha' : 'password'
     },
@@ -144,7 +142,7 @@ export default {
       this.$refs[`${this.loginType}Form`].validate(valid => {
         if (!valid) return
         if (this.loginType === 'password') {
-          const imageCodeId = getCookie('imgCodeToken')
+          const imageCodeId = this.$cookies.get('imgCodeToken')
           Login({
             type: 'img',
             userName: user,

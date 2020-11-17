@@ -3,10 +3,12 @@
  * @Autor: Waker
  * @Date: 2020-11-16 19:38:14
  * @LastEditors: Waker
- * @LastEditTime: 2020-11-16 20:38:36
+ * @LastEditTime: 2020-11-17 10:24:19
  */
 import Vue from 'vue'
 import { logout, imgCaptchaLogin, smsCaptchaLogin, loginNoImgCaptcha } from '@/api/login'
+import {ACCESS_TOKEN} from '@/store/mutation-types'
+
 
 const user = {
   state: {
@@ -59,9 +61,7 @@ const user = {
           resolve()
         }).finally(() => {
           commit('SET_TOKEN', '')
-          commit('SET_INFO', {})
           Vue.ls.remove(ACCESS_TOKEN)
-          Vue.ls.remove(CURRENT_COMPANYID)
         })
       })
     },
