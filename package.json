@@ -17,6 +17,7 @@
     "core-js": "^3.6.5",
     "less": "^3.12.2",
     "less-loader": "^7.0.2",
+    "nprogress": "^0.2.0",
     "vue": "^2.6.11",
     "vue-cookies": "^1.7.4",
     "vue-ls": "^3.2.1",

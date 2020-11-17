@@ -3,7 +3,7 @@
  * @Autor: Waker
  * @Date: 2020-11-13 10:15:59
  * @LastEditors: Waker
- * @LastEditTime: 2020-11-16 10:20:34
+ * @LastEditTime: 2020-11-17 13:09:11
  */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
@@ -21,11 +21,9 @@ const computedRouterList = function () {
 }
 
 
-const router = new VueRouter({
+export default new VueRouter({
+  // mode: 'history',
   routes: computedRouterList(),
   scrollBehavior: () => ({ y: 0 }),
 })
 
-export default {
-  router
-}

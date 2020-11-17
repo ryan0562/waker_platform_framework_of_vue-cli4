@@ -3,12 +3,15 @@
  * @Autor: Waker
  * @Date: 2020-11-10 17:05:10
  * @LastEditors: Waker
- * @LastEditTime: 2020-11-17 10:57:19
+ * @LastEditTime: 2020-11-17 13:09:20
  */
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+
+/* 权限控制 */
+import '@/router/permission' // permission control
 
 /* 引入全局样式 */
 import '@/style/index.less'
@@ -46,9 +49,10 @@ Vue.config.devtools = true;
 import regExp from '@/utils/regExp'
 Vue.prototype.$regExp = regExp
 
+
 /* vue实例化 */
 const app = new Vue({
-  router: router.router,
+  router: router,
   store,
   render: h => h(App)
 }).$mount('#app')
