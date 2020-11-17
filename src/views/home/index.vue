@@ -3,14 +3,10 @@
  * @Autor: Waker
  * @Date: 2020-11-10 17:06:05
  * @LastEditors: Waker
- * @LastEditTime: 2020-11-16 19:24:49
+ * @LastEditTime: 2020-11-17 16:13:43
 -->
 <template>
-  <div class="home">
-    <div class="bg">22aa</div>
-    <div class="as"></div>
-    <iconfont type="iconshangchuan" />
-  </div>
+  <div class="home">home</div>
 </template>
 
 <script>
@@ -22,9 +18,4 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.as {
-  background: #000;
-  width: 1000px;
-  height: 50px;
-}
 </style>

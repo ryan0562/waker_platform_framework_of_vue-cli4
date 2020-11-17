@@ -3,7 +3,7 @@
  * @Autor: Waker
  * @Date: 2020-06-08 20:05:28
  * @LastEditors: Waker
- * @LastEditTime: 2020-11-16 20:59:30
+ * @LastEditTime: 2020-11-17 17:37:15
  */
 import Vue from 'vue'
 import axios from 'axios'
@@ -19,7 +19,7 @@ const service = axios.create({
 const err = (error) => {
   if (error.response) {
     const data = error.response.data
-    // const token = Vue.ls.get(ACCESS_TOKEN)
+    const token = Vue.ls.get(ACCESS_TOKEN)
     if (error.response.status === 403) {
       notification.error({
         message: '禁止',
@@ -49,7 +49,7 @@ const err = (error) => {
 service.interceptors.request.use(config => {
   const token = Vue.ls.get(ACCESS_TOKEN)
   if (token) {
-    config.headers['Authorization'] = token // 让每个请求携带自定义 token 请根据实际情况自行修改
+    config.headers[ACCESS_TOKEN] = token // 让每个请求携带自定义 token 请根据实际情况自行修改
   }
   return config
 })

@@ -3,7 +3,7 @@
  * @Autor: Waker
  * @Date: 2020-11-13 10:15:59
  * @LastEditors: Waker
- * @LastEditTime: 2020-11-17 13:09:11
+ * @LastEditTime: 2020-11-17 17:33:41
  */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
@@ -19,7 +19,6 @@ const computedRouterList = function () {
   /* 权限路由 */
   
 }
-
 
 export default new VueRouter({
   // mode: 'history',
