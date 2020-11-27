@@ -7,24 +7,31 @@
  */
 import Vue from 'vue'
 import { logout, imgCaptchaLogin, smsCaptchaLogin, loginNoImgCaptcha } from '@/api/login'
-import {ACCESS_TOKEN} from '@/store/mutation-types'
+import { getPermissionByUserId } from '@/api/user'
+import { ACCESS_TOKEN } from '@/store/mutation-types'
 
 
 const user = {
   state: {
     token: '',
-    user:{},
+    info: {},
+    permissionList: [],
   },
 
   mutations: {
-    SET_TOKEN: (state, token) => {
-      state.token = token
+    // 设置token
+    SET_TOKEN: (state, data) => {
+      state.token = data
+    },
+    // 设置用户权限列表
+    SET_PERMISSIONLIST: (state, data) => {
+      state.permissionList = data
     },
   },
 
   actions: {
     // 登录
-    Login ({ commit }, { type, ...params }) {
+    Login({ commit }, { type, ...params }) {
       return new Promise((resolve, reject) => {
         let ax = ''
         switch (type) {
@@ -53,7 +60,7 @@ const user = {
       })
     },
     // 登出
-    Logout ({ commit, state }) {
+    Logout({ commit, state }) {
       return new Promise((resolve) => {
         logout(state.token).then(() => {
           resolve()
@@ -65,7 +72,27 @@ const user = {
         })
       })
     },
-
+    // 获取路由权限
+    GetPermission({ commit }, { userId, companyId }) {
+      return new Promise((resolve, reject) => {
+        getPermissionByUserId({
+          saaSPermissionQuery: {
+            userId,
+            companyId,
+            platformId: 5,
+          },
+        }).then(res => {
+          if (res.success) {
+            commit('SET_PERMISSIONLIST', res.dataList)
+            resolve(res)
+          } else {
+            reject(res)
+          }
+        }).catch(err => {
+          reject(err)
+        })
+      })
+    },
   },
 }
 

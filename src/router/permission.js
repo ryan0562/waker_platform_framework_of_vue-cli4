@@ -10,6 +10,7 @@ import Vue from 'vue'
 import router from './index.js'
 import { defaultRouterList } from './list.js'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
+import store from '@/store/index'
 
 import NProgress from 'nprogress'
 import '@/components/NProgress/nprogress.less'
@@ -31,6 +32,18 @@ router.beforeEach((to, from, next) => {
   // 没token的直接跳转带登录
   if (!Vue.ls.get(ACCESS_TOKEN)) {
     next('/login')
+    return
+  }
+  // 用户信息不存在
+  console.log(store.state.user)
+  if (JSON.stringify(store.state.user) === "{}") {
+    store.dispatch('GetPermission', {
+      companyId:1,
+      userId:1,
+    }).then(() => { 
+      debugger
+    })
+
     return
   }
 

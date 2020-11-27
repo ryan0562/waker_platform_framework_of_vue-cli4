@@ -7,9 +7,10 @@
  */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import {permissionRouterList,defaultRouterList} from './list.js'
-
+import { permissionRouterList, defaultRouterList } from './list.js'
 Vue.use(VueRouter)
+
+
 
 /* 路由计算函数 */
 const computedRouterList = function () {
@@ -17,7 +18,8 @@ const computedRouterList = function () {
   if(process.env.NODE_ENV !== 'production') return permissionRouterList.concat(defaultRouterList)
 
   /* 权限路由 */
-  
+  // getPermission()
+  // return defaultRouterList
 }
 
 export default new VueRouter({
