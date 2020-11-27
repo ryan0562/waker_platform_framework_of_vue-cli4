@@ -7,14 +7,14 @@
  */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import routerList from './list.js'
+import {permissionRouterList,defaultRouterList} from './list.js'
 
 Vue.use(VueRouter)
 
 /* 路由计算函数 */
 const computedRouterList = function () {
   /* 非生产环境显示全路由 */
-  if(process.env.NODE_ENV !== 'production') return routerList.permissionRouterList.concat(routerList.defaultRouterList)
+  if(process.env.NODE_ENV !== 'production') return permissionRouterList.concat(defaultRouterList)
 
   /* 权限路由 */
   
