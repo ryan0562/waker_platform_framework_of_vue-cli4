@@ -36,12 +36,13 @@ router.beforeEach((to, from, next) => {
   }
   // 用户信息不存在
   console.log(store.state.user)
-  if (JSON.stringify(store.state.user) === "{}") {
+  if (!store.state.user.id) {
+    
     store.dispatch('GetPermission', {
       companyId:1,
       userId:1,
-    }).then(() => { 
-      debugger
+    }).then((res) => { 
+      next()
     })
 
     return

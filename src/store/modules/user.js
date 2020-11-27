@@ -14,7 +14,6 @@ import { ACCESS_TOKEN } from '@/store/mutation-types'
 const user = {
   state: {
     token: '',
-    info: {},
     permissionList: [],
   },
 
