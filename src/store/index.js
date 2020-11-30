@@ -9,6 +9,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import user from './modules/user'
+import createVuexAlong from "vuex-along";
 
 Vue.use(Vuex)
 
@@ -22,4 +23,13 @@ export default new Vuex.Store({
   },
   actions: {
   },
+  plugins:[
+    // 持久化 vuex
+    createVuexAlong({
+      name: "vuex-along",
+      local: {
+        list: ["user"],
+      },
+    })
+  ]
 })

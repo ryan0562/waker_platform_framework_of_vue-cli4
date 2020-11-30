@@ -7,14 +7,15 @@
  */
 import Vue from 'vue'
 import { logout, imgCaptchaLogin, smsCaptchaLogin, loginNoImgCaptcha } from '@/api/login'
-import { getPermissionByUserId } from '@/api/user'
+import { getPermissionByUserId, getUserInfo } from '@/api/user'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 
-
-const user = {
+export default {
   state: {
     token: '',
     permissionList: [],
+    company: {},
+    info: {},
   },
 
   mutations: {
@@ -25,6 +26,14 @@ const user = {
     // 设置用户权限列表
     SET_PERMISSIONLIST: (state, data) => {
       state.permissionList = data
+    },
+    //  设置公司ID
+    SET_COMPANYID: (state, data) => {
+      state.company.id = parseInt(data)
+    },
+
+    SET_USER: (state, info) => {
+      state.info = info
     },
   },
 
@@ -47,7 +56,6 @@ const user = {
         ax(params).then(response => {
           if (!response.code) {
             const result = response.data
-            Vue.ls.set(ACCESS_TOKEN, result, 7 * 24 * 60 * 60 * 1000)
             commit('SET_TOKEN', result)
             resolve()
           } else {
@@ -72,7 +80,7 @@ const user = {
       })
     },
     // 获取路由权限
-    GetPermission({ commit }, { userId, companyId }) {
+    GetPermission({ commit, state }, { userId, companyId }) {
       return new Promise((resolve, reject) => {
         getPermissionByUserId({
           saaSPermissionQuery: {
@@ -81,18 +89,61 @@ const user = {
             platformId: 5,
           },
         }).then(res => {
-          if (res.success) {
-            commit('SET_PERMISSIONLIST', res.dataList)
-            resolve(res)
-          } else {
+          if (res.code !== null) {
             reject(res)
+            return
           }
+          commit('SET_PERMISSIONLIST', res.dataList)
+          resolve(res)
         }).catch(err => {
           reject(err)
         })
       })
     },
+    // 设置token
+    SetToken({ commit }, token) {
+      return new Promise(resolve => {
+        commit('SET_TOKEN', token)
+        resolve()
+      })
+    },
+    // 设置公司信息
+    SetCompanyId({ commit }, id) {
+      return new Promise((resolve) => {
+        commit('SET_COMPANYID', id)
+        resolve()
+      })
+    },
+    // 获取用户信息
+    GetInfo({ commit, state }, companyId = state.company.id) {
+      return new Promise((resolve, reject) => {
+        getUserInfo({
+          companyId,
+        }).then(res => {
+          if (res.code !== null) {
+            reject(res)
+            return
+          }
+          const result = res.data
+          commit('SET_USER', result)
+          resolve(res)
+        }).catch(err => reject(err))
+      })
+    },
+    // 设置跟获取所有用户相关信息
+    SetUserInfo({ dispatch, commit, state }, { companyId, token }) {
+      dispatch('SetToken', token)
+      dispatch('SetCompanyId', companyId)
+
+      return new Promise((resolve, reject) => {
+        dispatch('GetInfo').then(preRes => {
+          dispatch('GetPermission', { userId: state.info.id, companyId: state.company.id }).then(res => {
+            resolve(res)
+          }).catch(err => reject(err))
+
+        }).catch(err => reject(err))
+      })
+    }
   },
 }
 
-export default user

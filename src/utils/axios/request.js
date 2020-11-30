@@ -4,16 +4,13 @@ import store from '@/store'
 import notification from 'ant-design-vue/es/notification'
 import { VueAxios } from './axios'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
+// 签名参数
+import {idKey} from '@/config'
 // 签名
 // import creatSign from './sign'
 import openApi from './openApiSign'
 // 创建 axios 实例
 
-// 签名
-const idKey = {
-  accessKeyId: '6c946c4d6f19e940', // 根据项目固定
-  secretKey: 'ohxxzR8x3ssekBJUPmCmFAZPsIYhVXsuAFSDYN7xSEw=', // 根据项目固定
-}
 const service = axios.create({
   baseURL: '', // api base_url
   timeout: 6000, // 请求超时时间
@@ -47,9 +44,9 @@ const err = (error) => {
 
 // request interceptor
 service.interceptors.request.use(config => {
-  const token = Vue.ls.get(ACCESS_TOKEN) || 'web4090824576ea4dde9e26f1a3277a7672'
+  const token = store.state.user.token
   if (token) {
-    config.headers['Authorization'] = token // 让每个请求携带自定义 token 请根据实际情况自行修改
+    config.headers[ACCESS_TOKEN] = token // 让每个请求携带自定义 token 请根据实际情况自行修改
   }
   /* end  输出baseUrl到header */
   console.log(process.env)
@@ -76,7 +73,7 @@ const installer = {
     version: '1.0', // 版本号:默认1.0
     action: api.twoStepCode, // 业务服务接口
     method: 'post', // 不写默认post
-    paramsType: 'params', // axios传参方式 params:url后带参形式, data:json形式 ,不写默认params,
+    paramsType: 'data', // axios传参方式 params:url后带参形式, data:json形式 ,不写默认params,
     data: parameter, // 业务参数
     timeout: 6000, // 超时参数 单位:毫秒
   }
@@ -92,6 +89,7 @@ function gAxios(data) {
     url,
     method: data.method || 'post',
     proxy: data.proxy || '/api',
+    paramsType: data.paramsType || 'data',
     data: {
       parameter: data.data,
       action: data.action,
