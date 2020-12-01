@@ -55,15 +55,16 @@ let permissionRouterList = [
     name: 'icon',
     component: () => import('../views/testPage/icon.vue'),
     meta: {
-      permission: ['orders_top-up']
+      permission: ['orders_top-up'],
+      keepAlive:true,
     }
   },
   {
     path: '/icon2',
     name: 'icon2',
-    component: () => import('../views/testPage/icon.vue'),
+    component: () => import('../views/testPage/icon2.vue'),
     meta: {
-      permission: ['alarm_alarmRule']
+      permission: ['alarm_alarmRule'],
     }
   },
 ]

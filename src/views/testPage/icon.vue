@@ -7,24 +7,16 @@
 -->
 
 <template>
-  <div class="icon">
-    <iconfont type="iconshangchuan" />
-    <a-button type="dashed">Dashed</a-button>
-    <a-slider id="test" :default-value="30"/>
-  </div>
+  <div class="icon"></div>
 </template>
 
 <script>
 export default {
   name: "icon",
   components: {},
-  created() {
-    console.log(process.env.NODE_ENV);
-  },
+  created() {},
 };
 </script>
 <style lang="less" scoped>
-.icon {
-  font-size: 100px;
-}
+
 </style>

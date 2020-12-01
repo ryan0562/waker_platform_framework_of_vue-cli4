@@ -35,6 +35,7 @@ router.beforeEach((to, from, next) => {
     next()
     return
   }
+  
   // 在url中获取token跟conpanyId
   const { query: { token, companyId } } = to
   if (token && companyId) {
