@@ -9,8 +9,8 @@ import Vue from 'vue'
 import { logout, imgCaptchaLogin, smsCaptchaLogin, loginNoImgCaptcha } from '@/api/login'
 import { getPermissionByUserId, getUserInfo } from '@/api/user'
 import { defaultRouterList, permissionRouterList } from '@/router/list'
-import { convertRoutes } from '@/utils/routeConvert'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
+
 
 
 // 判断权限
@@ -83,7 +83,27 @@ function findDefaultRoutePath(accessedRouters) {
   }
   return '/'
 }
-
+// 路由处理
+function convertRoutes(nodes) {
+  if (!nodes) return null
+  nodes = JSON.parse(JSON.stringify(nodes))
+  let queue = Array.isArray(nodes) ? nodes.concat() : [nodes]
+  while (queue.length) {
+    const levelSize = queue.length
+    for (let i = 0; i < levelSize; i++) {
+      const node = queue.shift()
+      if (!node.children || !node.children.length) continue
+      node.children.forEach(child => {
+        // 转化相对路径
+        if (child.path[0] !== '/' && !child.path.startsWith('http')) {
+          child.path = node.path.replace(/(\w*)[/]*$/, `$1/${child.path}`)
+        }
+      })
+      queue = queue.concat(node.children)
+    }
+  }
+  return nodes
+}
 
 
 export default {
@@ -112,7 +132,7 @@ export default {
       state.info = info
     },
     // 设置路由
-    SET_ROUTERS: (state, routers=[]) => {
+    SET_ROUTERS: (state, routers = []) => {
       // state.addRouters = routers
       state.routers = routers.concat(defaultRouterList)
     },
