@@ -1,9 +1,7 @@
-import lodash from 'lodash'
-
 export function convertRoutes (nodes) {
   if (!nodes) return null
 
-  nodes = lodash.cloneDeep(nodes)
+  nodes = JSON.parse(JSON.stringify(nodes))
 
   let queue = Array.isArray(nodes) ? nodes.concat() : [nodes]
 
