@@ -51,17 +51,23 @@ router.beforeEach((to, from, next) => {
   const { query: { token, companyId } } = to
   if (token && companyId) {
     store.dispatch('SetUserInfo', { token, companyId }).then(res => {
-      // reNext(to, from, next)
       next()
     })
     return
   }
 
   // 没token直接跳转带登录
-  if (!store.state.user.token || !store.state.user.company.id) {
+  if (!store.state.user.token || !store.state.user.companyId) {
     redirectLogin(next)
     return
   }
+
+
+
+
+
+
+
   // 没用户信息去请求用户信息
   // if (!Vue.ls.get('user')) {
   //   store.dispatch('GetInfo').then(res => {

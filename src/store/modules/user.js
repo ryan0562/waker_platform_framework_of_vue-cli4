@@ -8,13 +8,89 @@
 import Vue from 'vue'
 import { logout, imgCaptchaLogin, smsCaptchaLogin, loginNoImgCaptcha } from '@/api/login'
 import { getPermissionByUserId, getUserInfo } from '@/api/user'
+import { defaultRouterList, permissionRouterList } from '@/router/list'
+import { convertRoutes } from '@/utils/routeConvert'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
+
+
+// 判断权限
+function hasPermission(permissionList, route) {
+  // 有permission去判断是否在返回的列表内,没有直接返回true
+  if (route.meta?.permission) {
+    let flag = false
+    for (let i = 0, len = permissionList.length; i < len; i++) {
+      const { id, uri } = permissionList[i]
+      // 是否匹配
+      flag = route.meta.permission.includes(uri)
+      if (flag) {
+        /* 将tab，按钮权限添加到路由meta配置中 */
+        let tabs = []
+        let btns = []
+        permissionList.forEach(item => {
+          if (item.pid === id) {
+            switch (item.type) {
+            // 按钮
+            case 3:
+              tabs.push(item.uri)
+              break;
+              // tabs
+            case 4:
+              btns.push(item.uri)
+              break;
+            }
+          }
+        })
+        route.meta.pagePermission = {
+          tabs,
+          btns,
+        }
+        return true
+      }
+    }
+    return false
+  }
+  return true
+}
+
+// 过滤路由
+function filterAsyncRouter(routerMap, permissionList) {
+  const accessedRouters = routerMap.filter(route => {
+    if (hasPermission(permissionList, route)) {
+      if (route.children?.length) {
+        route.children = filterAsyncRouter(route.children, permissionList)
+      }
+      return true
+    }
+    return false
+  })
+  return accessedRouters
+}
+
+// 查找默认路由
+function findDefaultRoutePath(accessedRouters) {
+  if (accessedRouters && accessedRouters.length) {
+    // const routes = accessedRouters[0].children
+    const routes = accessedRouters
+    const route = convertRoutes(routes.find(item => item.path !== '/'))
+    if (route) {
+      if (route.children && route.children.length) {
+        return route.children[0].path || '/'
+      }
+      return route.path || '/'
+    } else {
+      return '/404'
+    }
+  }
+  return '/'
+}
+
+
 
 export default {
   state: {
     token: '',
     permissionList: [],
-    company: {},
+    companyId: '',
     info: {},
   },
 
@@ -29,11 +105,20 @@ export default {
     },
     //  设置公司ID
     SET_COMPANYID: (state, data) => {
-      state.company.id = parseInt(data)
+      state.companyId = parseInt(data)
     },
-
+    // 设置用户信息
     SET_USER: (state, info) => {
       state.info = info
+    },
+    // 设置路由
+    SET_ROUTERS: (state, routers=[]) => {
+      // state.addRouters = routers
+      state.routers = routers.concat(defaultRouterList)
+    },
+    // 设置初始化打开页面
+    SET_DEFAULTACCESSROUTE: (state, route) => {
+      state.defaultAccessRoute = route
     },
   },
 
@@ -90,7 +175,7 @@ export default {
           },
         }).then(res => {
           if (res.code !== null) {
-            reject(res)
+            reject('获取用户权限失败')
             return
           }
           commit('SET_PERMISSIONLIST', res.dataList)
@@ -115,13 +200,13 @@ export default {
       })
     },
     // 获取用户信息
-    GetInfo({ commit, state }, companyId = state.company.id) {
+    GetInfo({ commit, state }, companyId = state.companyId) {
       return new Promise((resolve, reject) => {
         getUserInfo({
           companyId,
         }).then(res => {
           if (res.code !== null) {
-            reject(res)
+            reject('获取用户信息失败')
             return
           }
           const result = res.data
@@ -131,19 +216,31 @@ export default {
       })
     },
     // 设置跟获取所有用户相关信息
-    SetUserInfo({ dispatch, commit, state }, { companyId, token }) {
+    async SetUserInfo({ dispatch, commit, state }, { companyId, token }) {
       dispatch('SetToken', token)
       dispatch('SetCompanyId', companyId)
+      // try保障不阻塞
 
-      return new Promise((resolve, reject) => {
-        dispatch('GetInfo').then(preRes => {
-          dispatch('GetPermission', { userId: state.info.id, companyId: state.company.id }).then(res => {
-            resolve(res)
-          }).catch(err => reject(err))
+      try {
+        await dispatch('GetInfo')
+        await dispatch('GetPermission', { userId: state.info.id, companyId: state.companyId })
+        // return permissionList.dataList
+      } catch (e) {
+        throw new Error("构建权限失败,请检查相关接口");
+      }
+      await dispatch('GenerateRoutes')
 
-        }).catch(err => reject(err))
+    },
+    // 构建路由
+    GenerateRoutes({ commit, state }, permissionList = state.permissionList) {
+      return new Promise(resolve => {
+        const accessedRouters = filterAsyncRouter(permissionRouterList, permissionList)
+        const defaultAccessRoute = findDefaultRoutePath(accessedRouters)
+        commit('SET_ROUTERS', accessedRouters)
+        commit('SET_DEFAULTACCESSROUTE', defaultAccessRoute)
+        resolve()
       })
-    }
+    },
   },
 }
 
