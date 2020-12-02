@@ -49,7 +49,6 @@ Vue.config.devtools = true;
 import regExp from '@/utils/regExp'
 Vue.prototype.$regExp = regExp
 
-
 /* vue实例化 */
 const app = new Vue({
   router: router,

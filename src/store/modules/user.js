@@ -31,11 +31,17 @@ function hasPermission(permissionList, route) {
             switch (item.type) {
             // 按钮
             case 3:
-              tabs.push(item.uri)
+              btns.push(item.uri)
               break;
               // tabs
             case 4:
-              btns.push(item.uri)
+              tabs.push(item.uri)
+              // 获取tabs下的按钮权限
+              permissionList.forEach(v => {
+                if (v.pid === item.id) {
+                  btns.push(v.uri)
+                }
+              })
               break;
             }
           }

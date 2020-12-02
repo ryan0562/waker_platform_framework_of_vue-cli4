@@ -9,7 +9,7 @@
 <template>
   <div class="icon">
     <iconfont type="iconshangchuan" />
-    <a-button type="dashed">Dashed</a-button>
+    <a-button type="dashed" @click="">Dashed</a-button>
     <a-slider id="test" :default-value="30"/>
   </div>
 </template>
