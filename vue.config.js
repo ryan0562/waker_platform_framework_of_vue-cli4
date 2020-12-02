@@ -105,6 +105,14 @@ module.exports = {
           '^/api/uploadFiles': ''
         }
       },
+      '/api/mock': {
+        target: 'http://127.0.0.1:4523/mock/361268',
+        secure: false, // HTTPS接口,配置这个
+        changeOrigin: true, // 接口跨域
+        pathRewrite: {
+          '^/api/mock': ''
+        }
+      },
       '/api': {
         target: process.env.VUE_APP_OPENAPI,
         secure: false, // HTTPS接口,配置这个
@@ -112,7 +120,8 @@ module.exports = {
         pathRewrite: {
           '^/api': ''
         }
-      }
+      },
+      
     }
   },
 

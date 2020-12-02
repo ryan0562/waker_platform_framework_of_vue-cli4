@@ -15,6 +15,7 @@
 
 <script>
 import { debounce, throttle } from "@/utils/debounce";
+import {selectDataRoleList} from '@/api/mock'
 export default {
   name: "icon",
   data() {
@@ -26,7 +27,11 @@ export default {
   created() {},
   methods: {
     testThrottle: throttle(function (e) {
-      this.getText("v");
+      selectDataRoleList({
+        companyId:1,
+      }).then(res=>{
+        debugger
+      })
     }, 1000),
     testDeBounce: debounce(function (e) {
       this.getText("c");
