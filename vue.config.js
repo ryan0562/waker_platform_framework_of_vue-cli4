@@ -105,8 +105,9 @@ module.exports = {
           '^/api/uploadFiles': ''
         }
       },
+      // apifix处理
       '/api/mock': {
-        target: 'http://127.0.0.1:4523/mock/361268',
+        target: 'http://127.0.0.1:1234/mock/',
         secure: false, // HTTPS接口,配置这个
         changeOrigin: true, // 接口跨域
         pathRewrite: {
