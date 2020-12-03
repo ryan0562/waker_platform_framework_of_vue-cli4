@@ -5,7 +5,7 @@ import notification from 'ant-design-vue/es/notification'
 import { VueAxios } from './axios'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 // 签名参数
-import {idKey} from '@/config'
+import { idKey } from '@/config'
 // 签名
 // import creatSign from './sign'
 import openApi from './openApiSign'
@@ -54,9 +54,15 @@ service.interceptors.request.use(config => {
 })
 
 // response interceptor
-service.interceptors.response.use((response) => {
-  return response.data
-}, err)
+service.interceptors.response.use((res) => {
+  // 登录超时，token失效
+  const code = res.data.code
+  if (code === '1001') {
+    console.error('登录超时')
+    store.dispatch('Logout',code)
+  }
+  return res.data
+},)
 
 const installer = {
   vm: {},
@@ -97,7 +103,7 @@ function gAxios(data) {
     },
 
   }
- 
+
   obj.data = openApi.generate(obj.data, 'POST', idKey.accessKeyId, idKey.secretKey)
 
   // 超时设置

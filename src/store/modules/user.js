@@ -118,12 +118,14 @@ export default {
     permissionList: [],
     companyId: '',
     info: {},
+    _expires: '',
   },
 
   mutations: {
     // 设置token
     SET_TOKEN: (state, data) => {
       state.token = data
+      state._expires = new Date().getTime() + 1000 * 60 * 60 * 24
     },
     // 设置用户权限列表
     SET_PERMISSIONLIST: (state, data) => {
@@ -178,17 +180,12 @@ export default {
       })
     },
     // 登出
-    Logout({ commit, state }) {
-      return new Promise((resolve) => {
-        logout(state.token).then(() => {
-          resolve()
-        }).catch(() => {
-          resolve()
-        }).finally(() => {
-          commit('SET_TOKEN', '')
-          Vue.ls.remove(ACCESS_TOKEN)
-        })
-      })
+    Logout({ commit, state }, code) {
+      if (code !== '1001') {
+        logout(state.token)
+      }
+      // 删除所有vuex持久化数据
+      localStorage.removeItem('vuex-along')
     },
     // 获取路由权限
     GetPermission({ commit, state }, { userId, companyId }) {
