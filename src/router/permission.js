@@ -40,7 +40,7 @@ router.beforeEach((to, from, next) => {
   const { query: { token, companyId } } = to
   if (token && companyId) {
     store.dispatch('SetUserInfo', { token, companyId }).then(res => {
-      next()
+      next({...to,query:{}})
     })
     return
   }
