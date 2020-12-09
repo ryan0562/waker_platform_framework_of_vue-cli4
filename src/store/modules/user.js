@@ -190,8 +190,8 @@ export default {
       if (code !== '1001') {
         logout(state.token)
       }
-      // open(state.systemUrl[3], '_self')
-      console.log(state.systemUrl[3])
+      open(state.systemUrl[3], '_self')
+      // console.log(state.systemUrl[3])
       // 删除所有vuex持久化数据
       localStorage.removeItem('vuex-along')
     },
