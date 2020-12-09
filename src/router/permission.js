@@ -20,11 +20,6 @@ NProgress.configure({ showSpinner: false })
 // 白名单name集合
 const whiteList = defaultRouterList.map(item => item.name)
 
-// 重定向到login
-const redirectLogin = (next) => {
-  next('/login')
-}
-
 router.beforeEach((to, from, next) => {
   NProgress.start()
   // 页面标题
@@ -35,19 +30,23 @@ router.beforeEach((to, from, next) => {
     next()
     return
   }
-  
+
+
+
   // 在url中获取token跟conpanyId
   const { query: { token, companyId } } = to
   if (token && companyId) {
     store.dispatch('SetUserInfo', { token, companyId }).then(res => {
-      next({...to,query:{}})
+      next({ ...to, query: {} })
+      // next()
     })
     return
   }
 
   // 没token直接跳转带登录
   if (!store.state.user.token || !store.state.user.companyId) {
-    redirectLogin(next)
+    // console.error('登录超时')
+    store.dispatch('Logout')
     return
   }
 

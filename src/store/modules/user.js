@@ -184,6 +184,8 @@ export default {
       if (code !== '1001') {
         logout(state.token)
       }
+      // open(Vue.ls.get('systemUrlMap')[3], '_self')
+      console.log(Vue.ls.get('systemUrlMap')[3])
       // 删除所有vuex持久化数据
       localStorage.removeItem('vuex-along')
     },
@@ -238,12 +240,12 @@ export default {
         }).catch(err => reject(err))
       })
     },
+    
     // 设置跟获取所有用户相关信息
     async SetUserInfo({ dispatch, commit, state }, { companyId, token }) {
       dispatch('SetToken', token)
       dispatch('SetCompanyId', companyId)
       // try保障不阻塞
-
       try {
         await dispatch('GetInfo')
         await dispatch('GetPermission', { userId: state.info.id, companyId: state.companyId })

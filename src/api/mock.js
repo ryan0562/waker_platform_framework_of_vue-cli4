@@ -1,4 +1,4 @@
-// 查询用户下的权限列表
+//测试mock
 import { gAxios } from '@/utils/axios/request'
 
 

@@ -21,3 +21,12 @@ export function getUserInfo(parameter) {
     data: parameter, // 业务参数
   })
 }
+
+// 获取系统url映射
+export function getSystemUrlMap(parameter) {
+  return gAxios({
+    url: '/userCenter', // 服务体系
+    action: 'getSystemUrlMap', // 业务服务接口
+    data: parameter, // 业务参数
+  })
+}
