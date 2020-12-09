@@ -184,8 +184,8 @@ export default {
       if (code !== '1001') {
         logout(state.token)
       }
-      // open(Vue.ls.get('systemUrlMap')[3], '_self')
-      console.log(Vue.ls.get('systemUrlMap')[3])
+      open(Vue.ls.get('systemUrlMap')[3], '_self')
+      // console.log(Vue.ls.get('systemUrlMap')[3])
       // 删除所有vuex持久化数据
       localStorage.removeItem('vuex-along')
     },

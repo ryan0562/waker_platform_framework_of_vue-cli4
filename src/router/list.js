@@ -56,6 +56,7 @@ let permissionRouterList = [
     component: () => import('../views/testPage/icon.vue'),
     meta: {
       permission: ['orders_top-up'],
+      title:'随便测试',
       keepAlive:true,
     }
   },
