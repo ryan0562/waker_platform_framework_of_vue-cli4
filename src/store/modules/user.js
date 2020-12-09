@@ -7,7 +7,7 @@
  */
 import Vue from 'vue'
 import { logout, imgCaptchaLogin, smsCaptchaLogin, loginNoImgCaptcha } from '@/api/login'
-import { getPermissionByUserId, getUserInfo } from '@/api/user'
+import { getPermissionByUserId, getUserInfo,getSystemUrlMap } from '@/api/user'
 import { defaultRouterList, permissionRouterList } from '@/router/list'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 
@@ -118,6 +118,7 @@ export default {
     permissionList: [],
     companyId: '',
     info: {},
+    systemUrl:[],
     _expires: '',
   },
 
@@ -148,6 +149,11 @@ export default {
     SET_DEFAULTACCESSROUTE: (state, route) => {
       state.defaultAccessRoute = route
     },
+    // 设置系统url
+    SET_SYSTEMURL: (state, data) => {
+      state.systemUrl = data
+    },
+    
   },
 
   actions: {
@@ -184,8 +190,8 @@ export default {
       if (code !== '1001') {
         logout(state.token)
       }
-      open(Vue.ls.get('systemUrlMap')[3], '_self')
-      // console.log(Vue.ls.get('systemUrlMap')[3])
+      // open(state.systemUrl[3], '_self')
+      console.log(state.systemUrl[3])
       // 删除所有vuex持久化数据
       localStorage.removeItem('vuex-along')
     },
@@ -240,7 +246,7 @@ export default {
         }).catch(err => reject(err))
       })
     },
-    
+
     // 设置跟获取所有用户相关信息
     async SetUserInfo({ dispatch, commit, state }, { companyId, token }) {
       dispatch('SetToken', token)
@@ -266,6 +272,20 @@ export default {
         resolve()
       })
     },
+    // 获取系统url映射
+    async getSystemUrl({ dispatch, commit, state }) {
+      try {
+        const res = await getSystemUrlMap({})
+        const result = {}
+        res.dataList.forEach(item => {
+          result[item.id] = item.frontpath
+        })
+        // Vue.ls.set('systemUrlMap', result)
+        commit('SET_SYSTEMURL',result)
+      } catch (e) {
+        throw new Error("获取系统列表出错");
+      }
+    }
   },
 }
 

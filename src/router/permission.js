@@ -14,34 +14,22 @@ import store from '@/store/index'
 
 import NProgress from 'nprogress'
 import '@/components/NProgress/nprogress.less'
-import { getSystemUrlMap } from '@/api/user'
 
 NProgress.configure({ showSpinner: false })
 
 // 白名单name集合
 const whiteList = defaultRouterList.map(item => item.name);
 
-// 获取系统url映射
-async function getSystemUrl() {
-  const res = await getSystemUrlMap({})
-  const result = {}
-  res.dataList.forEach(item => {
-    result[item.id] = item.frontpath
-  })
-  Vue.ls.set('systemUrlMap', result)
-}
-
-// init().finally(res => {
+let isInit = true;
 router.beforeEach(async (to, from, next) => {
   NProgress.start()
   // 页面标题
   document.title = to.meta.title ? `中恒VUE平台前端架构 - ${to.meta.title}` : '中恒VUE平台前端架构'
 
-  // 获取系统url映射
-  try {
-    await getSystemUrl()
-  } catch (err) {
-    throw new Error('获取系统列表出错')
+  // 前置获取系统url映射
+  if (isInit) {
+    await store.dispatch('getSystemUrl')
+    isInit = false
   }
   // 通用路由直接进入
   if (whiteList.includes(to.name)) {
@@ -71,6 +59,5 @@ router.beforeEach(async (to, from, next) => {
 router.afterEach((to, from) => {
   NProgress.done()
 })
-// })
 
 
