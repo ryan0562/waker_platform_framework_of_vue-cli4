@@ -14,46 +14,56 @@ import store from '@/store/index'
 
 import NProgress from 'nprogress'
 import '@/components/NProgress/nprogress.less'
+import { getSystemUrlMap } from '@/api/user'
 
 NProgress.configure({ showSpinner: false })
 
 // 白名单name集合
 const whiteList = defaultRouterList.map(item => item.name)
 
-router.beforeEach((to, from, next) => {
-  NProgress.start()
-  // 页面标题
-  document.title = to.meta.title ? `中恒VUE平台前端架构 - ${to.meta.title}` : '中恒VUE平台前端架构'
+async function init() {
+  const res = await getSystemUrlMap({})
+  const result = {}
+  res.dataList.forEach(item => {
+    result[item.id] = item.frontpath
+  })
+  Vue.ls.set('systemUrlMap', result)
+}
 
-  // 通用路由直接进入
-  if (whiteList.includes(to.name)) {
+init().finally(res => {
+  router.beforeEach((to, from, next) => {
+    NProgress.start()
+    // 页面标题
+    document.title = to.meta.title ? `中恒VUE平台前端架构 - ${to.meta.title}` : '中恒VUE平台前端架构'
+
+    // 通用路由直接进入
+    if (whiteList.includes(to.name)) {
+      next()
+      return
+    }
+    // 在url中获取token跟conpanyId
+    const { query: { token, companyId } } = to
+    if (token && companyId) {
+      store.dispatch('SetUserInfo', { token, companyId }).then(res => {
+        next({ ...to, query: {} })
+        // next()
+      })
+      return
+    }
+
+    // 没token直接跳转带登录
+    if (!store.state.user.token || !store.state.user.companyId) {
+      // console.error('登录超时')
+      store.dispatch('Logout')
+      return
+    }
+
     next()
-    return
-  }
+  })
 
-
-
-  // 在url中获取token跟conpanyId
-  const { query: { token, companyId } } = to
-  if (token && companyId) {
-    store.dispatch('SetUserInfo', { token, companyId }).then(res => {
-      next({ ...to, query: {} })
-      // next()
-    })
-    return
-  }
-
-  // 没token直接跳转带登录
-  if (!store.state.user.token || !store.state.user.companyId) {
-    // console.error('登录超时')
-    store.dispatch('Logout')
-    return
-  }
-
-  next()
+  router.afterEach((to, from) => {
+    NProgress.done()
+  })
 })
 
-router.afterEach((to, from) => {
-  NProgress.done()
 
-})
