@@ -1,10 +1,4 @@
-/*
- * @Description: 
- * @Autor: Waker
- * @Date: 2020-11-10 17:06:05
- * @LastEditors: Waker
- * @LastEditTime: 2020-11-17 16:18:36
- */
+import { BasicLayout } from '@/layout'
 /**
  * @description:  特殊路由字段描述
  * @param {
@@ -25,6 +19,24 @@
 /* 公共访问路由 */
 let defaultRouterList = [
   {
+    path: '/',
+    name: 'home',
+    component: BasicLayout,
+    redirect: '/zh',
+    children: [
+      // zh
+      {
+        path: '/zh',
+        name: 'zh',
+        component: () => import('@/views/zh/list.vue'),
+        meta: {
+          title: '中恒通用页面',
+          icon: 'table',
+        },
+      },
+    ]
+  },
+  {
     path: '/login',
     name: 'login',
     component: () => import('@/views/login/Login'),
@@ -42,22 +54,15 @@ let defaultRouterList = [
 
 /* 权限路由 */
 let permissionRouterList = [
-  {
-    path: '/',
-    name: 'home',
-    component: () => import(/* webpackChunkName: "home" */'../views/home'),
-    meta: {
-      title: '欢迎页'
-    }
-  },
+ 
   {
     path: '/icon',
     name: 'icon',
     component: () => import('../views/testPage/icon.vue'),
     meta: {
       permission: ['orders_top-up'],
-      title:'随便测试',
-      keepAlive:true,
+      title: '随便测试',
+      keepAlive: true,
     }
   },
   {
