@@ -131,6 +131,13 @@ module.exports = {
   // 生产环境 sourceMap
   productionSourceMap: false,
   css: {
+    loaderOptions:{
+      less:{
+        lessOptions:{
+          javascriptEnabled: true,
+        }
+      }
+    },
     // 是否构建样式地图，false 将提高构建速度   正式环境开启
     sourceMap: !isProd
   }

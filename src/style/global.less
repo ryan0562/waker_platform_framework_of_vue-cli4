@@ -1,0 +1,87 @@
+/*
+ * @Description: 
+ * @Autor: Waker
+ * @Date: 2020-05-26 20:09:31
+ * @LastEditors: Waker
+ * @LastEditTime: 2020-06-29 13:36:41
+ */ 
+
+/* 设置滚动条的样式 */
+::-webkit-scrollbar-track-piece {
+  width: 8px;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  height: 50px;
+  background: #cfcfcf;
+  cursor: pointer;
+  border-radius: 4px
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+  cursor: pointer;
+}
+
+
+/************ 页面 组件 ***************/
+
+// 筛选模块
+.GfilterModule {
+  background: #fff;
+  padding: 12px 15px;
+  margin-bottom: 16px;
+
+  .form {
+    margin: 0 -15px -5px 0;
+
+    .ant-form-item-label {
+      width: 95px;
+      line-height: 46px;
+    }
+
+    .ant-form-item-control-wrapper {
+      width: 225px;
+    }
+
+    .ant-form-item {
+      &.btnBox {
+        .ant-form-item-control-wrapper {
+          width: auto;
+          margin-left: 24px;
+        }
+      }
+    }
+  }
+}
+
+// 列表模块
+.GlistModel {
+  background: #fff;
+  padding: 12px 15px;
+
+  .btnBox {
+    margin-bottom: 12px;
+  }
+
+  .action {
+    .ant-btn {
+      padding: 0;
+      margin-right: 11px;
+
+      &:last-of-type {
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+// 面包屑
+.Gbreadcrumb {
+  margin: -10px 0 15px 0;
+}

@@ -10,6 +10,9 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
+/* 通用样式 */
+import '@/style/index.less' 
+
 /* 权限控制 */
 import '@/router/permission' // permission control
 
