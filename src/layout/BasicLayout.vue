@@ -55,65 +55,29 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      // 动态主路由
-      mainMenu: state => state.permission.addRouters,
-    }),
-    contentPaddingLeft () {
-      if (!this.fixSidebar || this.isMobile()) {
-        return '0'
-      }
-      if (this.sidebarOpened) {
-        return '256px'
-      }
-      return '80px'
-    },
+    // ...mapState({
+    //   // 动态主路由
+    //   mainMenu: state => state.permission.addRouters,
+    // }),
   },
-  watch: {
-    sidebarOpened (val) {
-      this.collapsed = !val
-    },
+  // watch: {
+  //   sidebarOpened (val) {
+  //     this.collapsed = !val
+  //   },
+  // },
+  created () {
+    // 动态路由
+    // const routes = convertRoutes(this.mainMenu.find(item => item.path === '/'))
+    // 静态路由
+    const routes = this.$common.convertRoutes(permissionRouterList.find(item => item.path === '/'))
+    this.menus = (routes && routes.children) || []
   },
-  // created () {
-  //   // 动态路由
-  //   // const routes = convertRoutes(this.mainMenu.find(item => item.path === '/'))
-  //   // 静态路由
-  //   const routes = convertRoutes(permissionRouterList.find(item => item.path === '/'))
-  //   this.menus = (routes && routes.children) || []
-  //   this.collapsed = !this.sidebarOpened
-  // },
-  // mounted () {
-  //   const userAgent = navigator.userAgent
-  //   if (userAgent.indexOf('Edge') > -1) {
-  //     this.$nextTick(() => {
-  //       this.collapsed = !this.collapsed
-  //       setTimeout(() => {
-  //         this.collapsed = !this.collapsed
-  //       }, 16)
-  //     })
-  //   }
-  // },
+ 
   methods: {
-    ...mapActions(['setSidebar']),
     toggle () {
       this.collapsed = !this.collapsed
-      this.setSidebar(!this.collapsed)
-      triggerWindowResizeEvent()
     },
-    paddingCalc () {
-      let left = ''
-      if (this.sidebarOpened) {
-        left = this.isDesktop() ? '256px' : '80px'
-      } else {
-        left = (this.isMobile() && '0') || ((this.fixSidebar && '80px') || '0')
-      }
-      return left
-    },
-    menuSelect () {
-    },
-    drawerClose () {
-      this.collapsed = false
-    },
+  
   },
 }
 </script>

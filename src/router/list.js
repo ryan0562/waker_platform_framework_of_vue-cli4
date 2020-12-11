@@ -19,24 +19,6 @@ import { BasicLayout } from '@/layout'
 /* 公共访问路由 */
 let defaultRouterList = [
   {
-    path: '/',
-    name: 'home',
-    component: BasicLayout,
-    redirect: '/zh',
-    children: [
-      // zh
-      {
-        path: '/zh',
-        name: 'zh',
-        component: () => import('@/views/zh/list.vue'),
-        meta: {
-          title: '中恒通用页面',
-          icon: 'table',
-        },
-      },
-    ]
-  },
-  {
     path: '/login',
     name: 'login',
     component: () => import('@/views/login/Login'),
@@ -54,24 +36,64 @@ let defaultRouterList = [
 
 /* 权限路由 */
 let permissionRouterList = [
- 
   {
-    path: '/icon',
-    name: 'icon',
-    component: () => import('../views/testPage/icon.vue'),
-    meta: {
-      permission: ['orders_top-up'],
-      title: '随便测试',
-      keepAlive: true,
-    }
-  },
-  {
-    path: '/icon2',
-    name: 'icon2',
-    component: () => import('../views/testPage/icon2.vue'),
-    meta: {
-      permission: ['alarm_alarmRule'],
-    }
+    path: '/',
+    name: 'home',
+    component: BasicLayout,
+    redirect: '/hasPermission',
+    children: [
+      {
+        path: '/finance',
+        name: 'finance',
+        component: () => import('@/views/hasPermission/list.vue'),
+        meta: { title: '财务管理', icon: 'iconT-caiwuguanli', permission: ['finance'] },
+        children: [
+          {
+            path: 'user-account',
+            name: 'userAccount',
+            component: () => import('@/views/hasPermission/list.vue'),
+            meta: { title: '用户账户管理', permission: ['finance_user-account'] },
+          },
+          {
+            path: 'user-account/:accountId',
+            name: 'userAccountDetails',
+            component: () => import('@/views/hasPermission/list.vue'),
+            hidden: true,
+            meta: { title: '账户明细', permission: ['finance_user-account_details'] },
+          },
+        ],
+      },
+      // zh
+      {
+        path: '/hasPermission',
+        name: 'hasPermission',
+        component: () => import('@/views/hasPermission/list.vue'),
+        meta: {
+          title: '权限页面',
+          icon: 'table',
+        },
+        children:[
+          {
+            path: '/hasPermission/1',
+            name: 'noPermission_1',
+            component: () => import('@/views/noPermission/list.vue'),
+            meta: {
+              title: '非权限页面',
+              icon: 'table',
+            },
+          },
+        ]
+      },
+      {
+        path: '/noPermission',
+        name: 'noPermission',
+        component: () => import('@/views/noPermission/list.vue'),
+        meta: {
+          title: '非权限页面',
+          icon: 'table',
+        },
+      },
+    ]
   },
 ]
 export {
