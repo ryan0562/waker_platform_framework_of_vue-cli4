@@ -42,9 +42,9 @@ router.beforeEach(async (to, from, next) => {
       router.addRoutes(store.state.user.routers)
       if(token || companyId){
         next({ ...to, query: {} })
-        // next()
       }else {
-        next()
+        //fix:不要删to
+        next(to)
       }
     })
 
