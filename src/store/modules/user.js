@@ -142,8 +142,13 @@ export default {
     // 设置路由
     SET_ROUTERS: (state, routers = []) => {
       // state.addRouters = routers
-      // state.routers = routers.concat(defaultRouterList)
-      state.routers = routers
+      state.routers = [
+        ...routers.concat(defaultRouterList),
+        {
+          path: '*', redirect: '/404', hidden: true,
+        }
+      ]
+      // state.routers = routers
       // router.addRoutes(routers)
     },
     // 设置初始化打开页面
@@ -270,12 +275,7 @@ export default {
     },
     // 构建路由
     GenerateRoutes({ commit, state }, permissionList = state.permissionList) {
-      const accessedRouters = [
-        ...filterAsyncRouter(permissionRouterList, permissionList),
-        {
-          path: '*', redirect: '/404', hidden: true,
-        },
-      ]
+      const accessedRouters = filterAsyncRouter(permissionRouterList, permissionList)
       const defaultAccessRoute = findDefaultRoutePath(accessedRouters)
       const menu = accessedRouters.find(item => item.path === '/').children
       commit('SET_ROUTERS', accessedRouters)
