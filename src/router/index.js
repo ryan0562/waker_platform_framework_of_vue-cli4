@@ -15,11 +15,11 @@ Vue.use(VueRouter)
 /* 路由计算函数 */
 const computedRouterList = function () {
   /* 非生产环境显示全路由 */
-  if(process.env.NODE_ENV !== 'production') return permissionRouterList.concat(defaultRouterList)
+  // if(process.env.NODE_ENV !== 'production') return permissionRouterList.concat(defaultRouterList)
 
   /* 权限路由 */
   // getPermission()
-  // return defaultRouterList
+  return defaultRouterList
 }
 
 export default new VueRouter({

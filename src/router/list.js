@@ -29,9 +29,9 @@ let defaultRouterList = [
     component: () => import('@/views/error/404'),
     hidden: true,
   },
-  {
-    path: '*', redirect: '/404', hidden: true,
-  },
+  // {
+  //   path: '*', redirect: '/404', hidden: true,
+  // },
 ];
 
 /* 权限路由 */

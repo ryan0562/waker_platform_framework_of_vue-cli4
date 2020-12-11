@@ -29,20 +29,20 @@ router.beforeEach(async (to, from, next) => {
   // 前置获取系统url映射
   if (isInit) {
     await store.dispatch('getSystemUrl')
-    isInit = false
-  }
-  // 通用路由直接进入
-  if (whiteList.includes(to.name)) {
-    next()
-    return
-  }
-  // 在url中获取token跟conpanyId
-  const { query: { token, companyId } } = to
-  if (token && companyId) {
+    // 在url中获取token跟conpanyId
+    const { query: { token, companyId } } = to
     store.dispatch('SetUserInfo', { token, companyId }).then(res => {
+      router.addRoutes(store.state.user.routers)
       next({ ...to, query: {} })
       // next()
     })
+    isInit = false
+    return
+  }
+
+  // 通用路由直接进入
+  if (whiteList.includes(to.name)) {
+    next()
     return
   }
 

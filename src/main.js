@@ -13,6 +13,10 @@ import store from './store'
 /* 通用样式 */
 import '@/style/index.less' 
 
+/* 全局公用方法 */
+import common from '@/utils/common'
+Vue.prototype.$common = common
+
 /* 权限控制 */
 import '@/router/permission' // permission control
 
@@ -52,9 +56,6 @@ Vue.config.devtools = true;
 import regExp from '@/utils/regExp'
 Vue.prototype.$regExp = regExp
 
-/* 全局公用方法 */
-import common from '@/utils/common'
-Vue.prototype.$common = common
 
 
 /* vue实例化 */

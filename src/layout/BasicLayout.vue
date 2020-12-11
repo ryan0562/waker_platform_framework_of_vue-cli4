@@ -55,10 +55,10 @@ export default {
     }
   },
   computed: {
-    // ...mapState({
-    //   // 动态主路由
-    //   mainMenu: state => state.permission.addRouters,
-    // }),
+    ...mapState({
+      // 动态主路由
+      mainMenu: state => state.user.menu,
+    }),
   },
   // watch: {
   //   sidebarOpened (val) {
@@ -67,10 +67,10 @@ export default {
   // },
   created () {
     // 动态路由
-    // const routes = convertRoutes(this.mainMenu.find(item => item.path === '/'))
+    // const routes = this.mainMenu
     // 静态路由
-    const routes = this.$common.convertRoutes(permissionRouterList.find(item => item.path === '/'))
-    this.menus = (routes && routes.children) || []
+    // const routes = (permissionRouterList.find(item => item.path === '/'))
+    this.menus = this.mainMenu.children
   },
  
   methods: {

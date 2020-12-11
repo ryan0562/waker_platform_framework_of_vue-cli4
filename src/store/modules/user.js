@@ -6,8 +6,9 @@
  * @LastEditTime: 2020-11-17 10:24:19
  */
 import Vue from 'vue'
+import router from '@/router'
 import { logout, imgCaptchaLogin, smsCaptchaLogin, loginNoImgCaptcha } from '@/api/login'
-import { getPermissionByUserId, getUserInfo,getSystemUrlMap } from '@/api/user'
+import { getPermissionByUserId, getUserInfo, getSystemUrlMap } from '@/api/user'
 import { defaultRouterList, permissionRouterList } from '@/router/list'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 
@@ -17,12 +18,10 @@ import { ACCESS_TOKEN } from '@/store/mutation-types'
 function hasPermission(permissionList, route) {
   // 有permission去判断是否在返回的列表内,没有直接返回true
   if (route.meta?.permission) {
-    let flag = false
     for (let i = 0, len = permissionList.length; i < len; i++) {
       const { id, uri } = permissionList[i]
       // 是否匹配
-      flag = route.meta.permission.includes(uri)
-      if (flag) {
+      if (route.meta.permission.includes(uri)) {
         /* 将tab，按钮权限添加到路由meta配置中 */
         let tabs = []
         let btns = []
@@ -71,13 +70,33 @@ function filterAsyncRouter(routerMap, permissionList) {
   })
   return accessedRouters
 }
-
+/* 路由处理 */
+function convertRoutes(nodes) {
+  if (!nodes) return null
+  nodes = JSON.parse(JSON.stringify(nodes))
+  let queue = Array.isArray(nodes) ? nodes.concat() : [nodes]
+  while (queue.length) {
+    const levelSize = queue.length
+    for (let i = 0; i < levelSize; i++) {
+      const node = queue.shift()
+      if (!node.children || !node.children.length) continue
+      node.children.forEach(child => {
+        // 转化相对路径
+        if (child.path[0] !== '/' && !child.path.startsWith('http')) {
+          child.path = node.path.replace(/(\w*)[/]*$/, `$1/${child.path}`)
+        }
+      })
+      queue = queue.concat(node.children)
+    }
+  }
+  return nodes
+}
 // 查找默认路由
 function findDefaultRoutePath(accessedRouters) {
   if (accessedRouters && accessedRouters.length) {
     // const routes = accessedRouters[0].children
     const routes = accessedRouters
-    const route = Vue.$common.convertRoutes(routes.find(item => item.path !== '/'))
+    const route = convertRoutes(routes.find(item => item.path !== '/'))
     if (route) {
       if (route.children && route.children.length) {
         return route.children[0].path || '/'
@@ -98,7 +117,7 @@ export default {
     permissionList: [],
     companyId: '',
     info: {},
-    systemUrl:[],
+    systemUrl: [],
     _expires: '',
   },
 
@@ -123,7 +142,9 @@ export default {
     // 设置路由
     SET_ROUTERS: (state, routers = []) => {
       // state.addRouters = routers
-      state.routers = routers.concat(defaultRouterList)
+      // state.routers = routers.concat(defaultRouterList)
+      state.routers = routers
+      // router.addRoutes(routers)
     },
     // 设置初始化打开页面
     SET_DEFAULTACCESSROUTE: (state, route) => {
@@ -133,7 +154,11 @@ export default {
     SET_SYSTEMURL: (state, data) => {
       state.systemUrl = data
     },
-    
+    // 设置菜单
+    SET_MEMU: (state, data) => {
+      state.menu = data
+    },
+
   },
 
   actions: {
@@ -228,29 +253,30 @@ export default {
     },
 
     // 设置跟获取所有用户相关信息
-    async SetUserInfo({ dispatch, commit, state }, { companyId, token }) {
+    async SetUserInfo({ dispatch, commit, state }, { companyId = state.companyId, token = state.token }) {
       dispatch('SetToken', token)
       dispatch('SetCompanyId', companyId)
       // try保障不阻塞
       try {
         await dispatch('GetInfo')
         await dispatch('GetPermission', { userId: state.info.id, companyId: state.companyId })
-        // return permissionList.dataList
+        const GenerateRoutes = await dispatch('GenerateRoutes')
+        return GenerateRoutes
       } catch (e) {
         throw new Error("构建权限失败,请检查相关接口");
       }
-      await dispatch('GenerateRoutes')
 
     },
     // 构建路由
     GenerateRoutes({ commit, state }, permissionList = state.permissionList) {
-      return new Promise(resolve => {
-        const accessedRouters = filterAsyncRouter(permissionRouterList, permissionList)
-        const defaultAccessRoute = findDefaultRoutePath(accessedRouters)
-        commit('SET_ROUTERS', accessedRouters)
-        commit('SET_DEFAULTACCESSROUTE', defaultAccessRoute)
-        resolve()
-      })
+      const accessedRouters = filterAsyncRouter(permissionRouterList, permissionList)
+      const defaultAccessRoute = findDefaultRoutePath(accessedRouters)
+      const menu = accessedRouters.find(item => item.path === '/')
+      commit('SET_ROUTERS', accessedRouters)
+      commit('SET_MEMU', menu)
+      commit('SET_DEFAULTACCESSROUTE', defaultAccessRoute)
+      // resolve(accessedRouters)
+      return accessedRouters
     },
     // 获取系统url映射
     async getSystemUrl({ dispatch, commit, state }) {
@@ -261,7 +287,7 @@ export default {
           result[item.id] = item.frontpath
         })
         // Vue.ls.set('systemUrlMap', result)
-        commit('SET_SYSTEMURL',result)
+        commit('SET_SYSTEMURL', result)
       } catch (e) {
         throw new Error("获取系统列表出错");
       }
