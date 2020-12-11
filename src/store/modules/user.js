@@ -271,7 +271,7 @@ export default {
     GenerateRoutes({ commit, state }, permissionList = state.permissionList) {
       const accessedRouters = filterAsyncRouter(permissionRouterList, permissionList)
       const defaultAccessRoute = findDefaultRoutePath(accessedRouters)
-      const menu = accessedRouters.find(item => item.path === '/')
+      const menu = accessedRouters.find(item => item.path === '/').children
       commit('SET_ROUTERS', accessedRouters)
       commit('SET_MEMU', menu)
       commit('SET_DEFAULTACCESSROUTE', defaultAccessRoute)
