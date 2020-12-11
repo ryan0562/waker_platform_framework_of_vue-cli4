@@ -195,6 +195,7 @@ export default {
       if (code !== '1001') {
         logout(state.token)
       }
+      debugger
       open(state.systemUrl[3], '_self')
       // console.log(state.systemUrl[3])
       // 删除所有vuex持久化数据
@@ -269,7 +270,12 @@ export default {
     },
     // 构建路由
     GenerateRoutes({ commit, state }, permissionList = state.permissionList) {
-      const accessedRouters = filterAsyncRouter(permissionRouterList, permissionList)
+      const accessedRouters = [
+        ...filterAsyncRouter(permissionRouterList, permissionList),
+        {
+          path: '*', redirect: '/404', hidden: true,
+        },
+      ]
       const defaultAccessRoute = findDefaultRoutePath(accessedRouters)
       const menu = accessedRouters.find(item => item.path === '/').children
       commit('SET_ROUTERS', accessedRouters)

@@ -70,7 +70,7 @@ export default {
     // const routes = this.mainMenu
     // 静态路由
     // const routes = (permissionRouterList.find(item => item.path === '/'))
-    this.menus = this.mainMenu.children
+    this.menus = this.mainMenu
   },
  
   methods: {

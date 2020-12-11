@@ -18,7 +18,7 @@ import '@/components/NProgress/nprogress.less'
 NProgress.configure({ showSpinner: false })
 
 // 白名单name集合
-const whiteList = defaultRouterList.map(item => item.name);
+const whiteList = [...defaultRouterList.map(item => item.name),'404'];
 
 let isInit = true;
 router.beforeEach(async (to, from, next) => {
@@ -26,16 +26,28 @@ router.beforeEach(async (to, from, next) => {
   // 页面标题
   document.title = to.meta.title ? `中恒VUE平台前端架构 - ${to.meta.title}` : '中恒VUE平台前端架构'
 
-  // 前置获取系统url映射
+  // 刷新页面就触发
   if (isInit) {
+    // 前置获取系统url映射
     await store.dispatch('getSystemUrl')
     // 在url中获取token跟conpanyId
     const { query: { token, companyId } } = to
+    // 本地或者url没token就退出登录
+    if ((!token || !token) && (!store.state.user.token || !store.state.user.companyId)) {
+      store.dispatch('Logout')
+      return
+    }
+    // 权限
     store.dispatch('SetUserInfo', { token, companyId }).then(res => {
       router.addRoutes(store.state.user.routers)
-      next({ ...to, query: {} })
-      // next()
+      if(token || companyId){
+        next({ ...to, query: {} })
+        // next()
+      }else {
+        next()
+      }
     })
+
     isInit = false
     return
   }
