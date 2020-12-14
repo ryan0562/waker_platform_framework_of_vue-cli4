@@ -69,11 +69,7 @@ export default {
         content: '真的要注销登录吗 ?',
         onOk: () => {
           return this.Logout({})
-            .then(() => {
-              setTimeout(() => {
-                window.location.reload()
-              }, 16)
-            })
+            .then(() => {})
             .catch(err => {
               this.$message.error({
                 title: '错误',
