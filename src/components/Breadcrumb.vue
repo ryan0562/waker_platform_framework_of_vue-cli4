@@ -38,4 +38,7 @@ export default {
 </script>
 
 <style scoped>
+.Gbreadcrumb {
+  margin: -10px 0 15px 0;
+}
 </style>

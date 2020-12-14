@@ -47,7 +47,7 @@ Vue.prototype.$map = map
 
 /* 全局注册iconfont */
 import iconfont from '@/components/Giconfont' // iconfont图标组件
-Vue.component('Iconfont', iconfont)
+Vue.component('iconfont', iconfont)
 
 /* 生成环境启动devtools */
 Vue.config.devtools = true;
