@@ -197,12 +197,11 @@ export default {
     },
     // 登出
     Logout({ commit, state }, code) {
-      debugger
       if (code !== '1001') {
         logout(state.token)
       }
       // debugger
-      // open(state.systemUrl[3], '_self')
+      open(state.systemUrl[3], '_self')
       // console.log(state.systemUrl[3])
       // 删除所有vuex持久化数据
       localStorage.removeItem('vuex-along')
