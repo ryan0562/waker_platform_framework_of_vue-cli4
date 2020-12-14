@@ -1,4 +1,4 @@
-import { BasicLayout } from '@/layout'
+import { BasicLayout,PageView } from '@/layout'
 /**
  * @description:  特殊路由字段描述
  * @param {
@@ -41,11 +41,15 @@ let permissionRouterList = [
     name: 'home',
     component: BasicLayout,
     redirect: '/hasPermission',
+    meta:{
+      title:'首页'
+    },
     children: [
       {
         path: '/finance',
         name: 'finance',
-        component: () => import('@/views/hasPermission/list.vue'),
+        component: PageView,
+        redirect: '/finance/user-account',
         meta: { title: '财务管理', icon: 'iconT-caiwuguanli', permission: ['finance'] },
         children: [
           {
