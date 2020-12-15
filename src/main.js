@@ -34,7 +34,7 @@ import '@/utils/cookies.js'
 import '@/utils/vue_ls.js'
 
 /* 全局注册antd */
-import 'ant-design-vue/dist/antd.css'
+// import 'ant-design-vue/dist/antd.css'
 import antd from 'ant-design-vue'
 Vue.use(antd)
 

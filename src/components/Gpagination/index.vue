@@ -79,7 +79,7 @@ export default {
   },
   methods: {
     goTo () {
-        console.log(this.$refs.pagination)
+      console.log(this.$refs.pagination)
     },
     // 修改列表触发
     pageChange (page, pageSize) {
