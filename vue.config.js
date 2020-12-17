@@ -134,6 +134,10 @@ module.exports = {
     loaderOptions:{
       less:{
         lessOptions:{
+		  //覆盖全局less变量
+          modifyVars: {
+            hack: `true; @import '~@/style/theme.less';`
+          },
           javascriptEnabled: true,
         }
       }
