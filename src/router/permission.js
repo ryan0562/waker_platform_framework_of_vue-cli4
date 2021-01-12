@@ -43,8 +43,9 @@ router.beforeEach(async (to, from, next) => {
     //from.name不存在的情况:name没写或者初次打开
     // const componentsName = to.matched[to.matched.length-1].components.default.name
     store.commit('SET_KEEPALIVEINCLUDES',{
-      path:`${from.name}___${to.name}`,
-      componentName:to.name
+      path:`${from.name}-->${to.name}`,
+      componentName:to.name,
+      always:to.meta.keepAlive.length===0
     })
   }
 

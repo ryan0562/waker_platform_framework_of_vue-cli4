@@ -30,7 +30,7 @@ export default {
   },
   computed: {
     'keepAliveIncludes'() {
-      const arr = Object.values(this.$store.state.keepAliveIncludes)
+      const arr = this.$store.state.keepAliveIncludes.map(i=>i.componentName)
       return Array.from(new Set(arr))
     },
   }

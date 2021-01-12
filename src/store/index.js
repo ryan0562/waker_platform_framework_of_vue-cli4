@@ -18,16 +18,26 @@ export default new Vuex.Store({
     user,
   },
   state: {
-    keepAliveIncludes:{}
+    keepAliveIncludes:[]
   },
   mutations: {
     // 设置缓存页面
     SET_KEEPALIVEINCLUDES: (state, data) => {
-      if(!state.keepAliveIncludes.hasOwnProperty(data.path)){
-        state.keepAliveIncludes = Object.assign({},state.keepAliveIncludes,{
-          [data.path]:data.componentName
-        }) 
+      // {
+      //   path:`${from.name}-->${to.name}`,
+      //   componentName:to.name,
+      //   always:to.meta.keepAlive.length===0
+      // }
+      const has = state.keepAliveIncludes.find(i=>i.path === data.path)
+      if(!has){
+        state.keepAliveIncludes.push(data)
       }
+      // state.keepAliveIncludes.find(i=>i)
+      // if(!state.keepAliveIncludes.hasOwnProperty(data.path)){
+      //   state.keepAliveIncludes = Object.assign({},state.keepAliveIncludes,{
+      //     [data.path]:data.componentName
+      //   }) 
+      // }
       // if(Array.isArray(data)){
       //   if(data.length>0) {
       //     state.keepAliveIncludes = data
@@ -39,7 +49,15 @@ export default new Vuex.Store({
       
     },
     DELETE_KEEPALIVEINCLUDES:(state, data) => {
-      state.keepAliveIncludes={}
+      state.keepAliveIncludes = state.keepAliveIncludes.filter(i=>i.always)
+      // let newValue = {}
+      // for(let i in state.keepAliveIncludes){
+      //   const item = state.keepAliveIncludes[i]
+      //   if(item.always){
+      //     newValue[i] = item
+      //   }
+      // }
+      // state.keepAliveIncludes = newValue
     }
   },
   actions: {

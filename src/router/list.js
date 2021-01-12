@@ -4,7 +4,7 @@ import { BasicLayout,PageView } from '@/layout'
  * @param {
   *    hideChildrenInMenu: Boolean , // 强制显示 MenuItem 而不是 SubMenu
   *    meta {
-  *      keepAlive: Boolean, // 是否缓存
+  *      keepAlive: Array, // 缓存的组件name(需要保持路由name跟组件name一致才会生效) , 如果是[],则进入任何页面都缓存
   *      permission: Array , // 权限数组
   *      icon: String, // icon字体
   *      title:String,//标题
@@ -64,7 +64,7 @@ let permissionRouterList = [
             component: () => import('@/views/hasPermission/detail.vue'),
             // hidden: true,
             
-            meta: { title: '账户明细',keepAlive:['no']},
+            meta: { title: '账户明细',},
           },
           {
             path: 'user-account/3',
@@ -72,7 +72,13 @@ let permissionRouterList = [
             component: () => import('@/views/hasPermission/no.vue'),
             // hidden: true,
             
-            meta: { title: '211',keepAlive:['userAccount']},
+            meta: { title: '211',keepAlive:[]},
+          },
+          {
+            path: 'user-account/4',
+            name: 'nnn',
+            component: () => import('@/views/hasPermission/nnn.vue'),
+            meta: { title: '333'},
           },
         ],
       },
