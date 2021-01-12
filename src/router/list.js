@@ -56,7 +56,7 @@ let permissionRouterList = [
             path: 'user-account',
             name: 'userAccount',
             component: () => import('@/views/hasPermission/list.vue'),
-            meta: { title: '用户账户管理',keepAlive:['userAccountDetails']  },
+            meta: { title: '用户账户管理',keepAlive:['userAccountDetails','no']  },
           },
           {
             path: 'user-account/2',
@@ -64,7 +64,7 @@ let permissionRouterList = [
             component: () => import('@/views/hasPermission/detail.vue'),
             // hidden: true,
             
-            meta: { title: '账户明细',},
+            meta: { title: '账户明细' },
           },
           {
             path: 'user-account/3',

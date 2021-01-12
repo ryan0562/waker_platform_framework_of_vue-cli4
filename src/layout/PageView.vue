@@ -21,12 +21,7 @@ export default {
   name: "PageView",
   data() {
     return {
-      // keepAliveIncludes:[]
     };
-  },
-  mounted() {
-    // console.log(this.$refs.content)
-    
   },
   computed: {
     'keepAliveIncludes'() {

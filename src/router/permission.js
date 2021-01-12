@@ -29,13 +29,11 @@ router.beforeEach(async (to, from, next) => {
   // 页面标题
   document.title = to.meta.title ? `中恒VUE平台前端架构 - ${to.meta.title}` : '中恒VUE平台前端架构'
 
-  // 如果去的页面不是已经缓存了的页面,则清除缓存
-  
-  //  && 
-  if((from.meta.keepAlive||[]).includes(to.name)){
-    console.log('去了可以缓存的页面');
-  }else{
-    console.log('去了不缓存的页面');
+  // 将所有缓存页面的keepalive拿出来扁平化
+  let cachePath = store.state.keepAliveIncludes.map(i=>i.keepAlive).flat(Infinity)
+  // 去了不缓存的页面就清理所有非常驻缓存组件
+  if(!cachePath.includes(to.name)){
+    // console.log('去了不缓存的页面');
     store.commit('DELETE_KEEPALIVEINCLUDES')
   }
 
@@ -43,9 +41,10 @@ router.beforeEach(async (to, from, next) => {
     //from.name不存在的情况:name没写或者初次打开
     // const componentsName = to.matched[to.matched.length-1].components.default.name
     store.commit('SET_KEEPALIVEINCLUDES',{
-      path:`${from.name}-->${to.name}`,
-      componentName:to.name,
-      always:to.meta.keepAlive.length===0
+      path:`${to.name}`,
+      componentName:to.name,//要求路由name跟默认组件的name保持一致
+      always:to.meta.keepAlive.length===0,
+      keepAlive:to.meta.keepAlive,
     })
   }
 

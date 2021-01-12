@@ -134,9 +134,6 @@ const data = [
 
 export default {
   name: 'userAccount',
-  destroyed(){
-    
-  },
   components: {
     listModelBtn: () => import('@/components/Gbutton/listModelBtn.vue'),
     Gpagination: () => import('@/components/Gpagination'),
