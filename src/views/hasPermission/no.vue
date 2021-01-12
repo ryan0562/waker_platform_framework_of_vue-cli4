@@ -92,6 +92,7 @@
         :errDownload="upload.errorUrl"
       ></Gupload>
 
+    
 
     </div>
   </section>
@@ -133,7 +134,7 @@ const data = [
 ]
 
 export default {
-  name: 'zhList',
+  name: 'no',
   
   components: {
     listModelBtn: () => import('@/components/Gbutton/listModelBtn.vue'),

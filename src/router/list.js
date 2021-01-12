@@ -50,20 +50,29 @@ let permissionRouterList = [
         name: 'finance',
         component: PageView,
         redirect: '/finance/user-account',
-        meta: { title: '财务管理', icon: 'iconT-caiwuguanli', permission: ['finance'] },
+        meta: { title: '财务管理', icon: 'iconT-caiwuguanli'},
         children: [
           {
             path: 'user-account',
             name: 'userAccount',
             component: () => import('@/views/hasPermission/list.vue'),
-            meta: { title: '用户账户管理', permission: ['finance_user-account'] },
+            meta: { title: '用户账户管理',keepAlive:['userAccountDetails']  },
           },
           {
-            path: 'user-account/:accountId',
+            path: 'user-account/2',
             name: 'userAccountDetails',
-            component: () => import('@/views/hasPermission/list.vue'),
-            hidden: true,
-            meta: { title: '账户明细', permission: ['finance_user-account_details'] },
+            component: () => import('@/views/hasPermission/detail.vue'),
+            // hidden: true,
+            
+            meta: { title: '账户明细',keepAlive:['no']},
+          },
+          {
+            path: 'user-account/3',
+            name: 'no',
+            component: () => import('@/views/hasPermission/no.vue'),
+            // hidden: true,
+            
+            meta: { title: '211',keepAlive:['userAccount']},
           },
         ],
       },

@@ -69,7 +69,7 @@ export default {
   },
   created () {
     this.init()
-    console.log(this)
+    
   },
   computed: {
     // 第xx页

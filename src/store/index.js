@@ -18,10 +18,36 @@ export default new Vuex.Store({
     user,
   },
   state: {
+    keepAliveIncludes:{}
   },
   mutations: {
+    // 设置缓存页面
+    SET_KEEPALIVEINCLUDES: (state, data) => {
+      if(!state.keepAliveIncludes.hasOwnProperty(data.path)){
+        state.keepAliveIncludes = Object.assign({},state.keepAliveIncludes,{
+          [data.path]:data.componentName
+        }) 
+      }
+      // if(Array.isArray(data)){
+      //   if(data.length>0) {
+      //     state.keepAliveIncludes = data
+      //   } else {
+      //     state.keepAliveIncludes = '/.*/'
+      //   }
+      // }
+      
+      
+    },
+    DELETE_KEEPALIVEINCLUDES:(state, data) => {
+      state.keepAliveIncludes={}
+    }
   },
   actions: {
+    // // 设置缓存页面
+    // set_keepAlive({ commit }, data) {
+      
+    //   commit('SET_KEEPALIVEINCLUDES',data)
+    // },
   },
   plugins:[
     // 持久化 vuex

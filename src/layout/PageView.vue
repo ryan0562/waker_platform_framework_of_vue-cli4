@@ -8,33 +8,43 @@
 <template>
   <div class="pageAuto">
     <slot>
-      <keep-alive v-if="$route.meta.keepAlive">
-        <router-view ref="content" />
+      <keep-alive :include="keepAliveIncludes" >
+        <router-view ref="content"/>
       </keep-alive>
-      <router-view v-else ref="content" />
+      <!-- <router-view v-else ref="content" /> -->
     </slot>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'PageView',
-  data () {
-    return {}
+  name: "PageView",
+  data() {
+    return {
+      // keepAliveIncludes:[]
+    };
+  },
+  mounted() {
+    // console.log(this.$refs.content)
+    
   },
   computed: {
+    'keepAliveIncludes'() {
+      const arr = Object.values(this.$store.state.keepAliveIncludes)
+      return Array.from(new Set(arr))
+    },
+  }
+  
 
-  },
-}
+};
 </script>
 
 <style lang="less" scoped>
-
 .pageAuto {
   position: absolute;
   width: 100%;
   height: 100%;
-  padding:24px;
+  padding: 24px;
   overflow: auto;
 }
 </style>

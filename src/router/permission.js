@@ -21,10 +21,32 @@ NProgress.configure({ showSpinner: false })
 const whiteList = [...defaultRouterList.map(item => item.name),'404'];
 
 let isInit = true;
+// let routerComponentsName= ''
+
 router.beforeEach(async (to, from, next) => {
+  
   NProgress.start()
   // 页面标题
   document.title = to.meta.title ? `中恒VUE平台前端架构 - ${to.meta.title}` : '中恒VUE平台前端架构'
+
+  // 如果去的页面不是已经缓存了的页面,则清除缓存
+  
+  //  && 
+  if((from.meta.keepAlive||[]).includes(to.name)){
+    console.log('去了可以缓存的页面');
+  }else{
+    console.log('去了不缓存的页面');
+    store.commit('DELETE_KEEPALIVEINCLUDES')
+  }
+
+  if(to.meta.keepAlive){
+    //from.name不存在的情况:name没写或者初次打开
+    // const componentsName = to.matched[to.matched.length-1].components.default.name
+    store.commit('SET_KEEPALIVEINCLUDES',{
+      path:`${from.name}___${to.name}`,
+      componentName:to.name
+    })
+  }
 
   // 刷新页面就触发
   if (isInit) {
@@ -69,6 +91,8 @@ router.beforeEach(async (to, from, next) => {
 })
 
 router.afterEach((to, from) => {
+  // 清理keepAliveIncludes 防止所有页面都缓存
+  // store.commit('SET_KEEPALIVEINCLUDES',[])
   NProgress.done()
 })
 

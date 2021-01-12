@@ -92,17 +92,7 @@
         :errDownload="upload.errorUrl"
       ></Gupload>
 
-      <Vue2Verify
-        @success="verify(true)"
-        @error="verify(false)"
-        :type="4"
-        :vSpace="0"
-        imgUrl="/verifyImages/"
-        :imgName="['1.jpg', '2.jpg','3.jpg', '4.jpg','5.jpg']"
-        :imgSize="{width:'300px',height:'200px'}"
-        :barSize="{width:'300px',height:'40px'}"
-        :showButton="false"></Vue2Verify>
-
+    
     </div>
   </section>
 </template>
@@ -143,8 +133,10 @@ const data = [
 ]
 
 export default {
-  name: 'zhList',
-  
+  name: 'userAccount',
+  destroyed(){
+    
+  },
   components: {
     listModelBtn: () => import('@/components/Gbutton/listModelBtn.vue'),
     Gpagination: () => import('@/components/Gpagination'),
@@ -197,7 +189,6 @@ export default {
       this.$refs.Gupload.showDialog = true
     },
     getList () {
-      console.log('上传回调')
       this.data = data
     },
     edit (text, record, index) {
