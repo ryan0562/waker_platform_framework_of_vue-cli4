@@ -21,14 +21,7 @@ NProgress.configure({ showSpinner: false })
 const whiteList = [...defaultRouterList.map(item => item.name),'404'];
 
 let isInit = true;
-// let routerComponentsName= ''
-
-router.beforeEach(async (to, from, next) => {
-  
-  NProgress.start()
-  // 页面标题
-  document.title = to.meta.title ? `中恒VUE平台前端架构 - ${to.meta.title}` : '中恒VUE平台前端架构'
-
+function routerComponentCache(to){
   // 将所有缓存页面的keepalive拿出来扁平化
   let cachePath = store.state.keepAliveIncludes.map(i=>i.keepAlive).flat(Infinity)
   // 去了不缓存的页面就清理所有非常驻缓存组件
@@ -47,6 +40,16 @@ router.beforeEach(async (to, from, next) => {
       keepAlive:to.meta.keepAlive,
     })
   }
+}
+
+router.beforeEach(async (to, from, next) => {
+  
+  NProgress.start()
+  // 页面标题
+  document.title = to.meta.title ? `中恒VUE平台前端架构 - ${to.meta.title}` : '中恒VUE平台前端架构'
+
+  // 组件缓存机制
+  routerComponentCache(to)
 
   // 刷新页面就触发
   if (isInit) {
