@@ -181,6 +181,8 @@ export default {
           if (!response.code) {
             const result = response.data
             commit('SET_TOKEN', result)
+            /* TODO设置为124,方便开发 */
+            commit('SET_COMPANYID', 124)
             resolve()
           } else {
             reject(response)

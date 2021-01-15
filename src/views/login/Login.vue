@@ -177,7 +177,8 @@ export default {
       });
     },
     loginSuccess(res) {
-      this.$router.push({ path: '/' })
+      // this.$router.push({ path: '/' })
+      location.href = location.origin
     },
     requestFailed(err) {
       
