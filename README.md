@@ -28,3 +28,20 @@ Vue CLI 项目天生支持 [PostCSS](http://postcss.org/)、[CSS Modules](https:
 ## 引用静态资源
 
 所有编译后的 CSS 都会通过 [css-loader](https://github.com/webpack-contrib/css-loader) 来解析其中的 `url()` 引用，并将这些引用作为模块请求来处理。这意味着你可以根据本地的文件结构用相对路径来引用静态资源。另外要注意的是如果你想要引用一个 npm 依赖中的文件，或是想要用 webpack alias，则需要在路径前加上 `~` 的前缀来避免歧义。更多细节请参考[处理静态资源](./html-and-static-assets.md#处理静态资源)。
+
+## 配置相关
+配置文件 => config/index.js
+
+- 一键切换内页登录跟外页统一登录
+``` js
+const loginModel = 'out'   // 外部平台登录:'out'  内页登录:'in'
+```
+
+- 参数签名修改
+```js
+// 签名参数
+const idKey = {
+  accessKeyId: '6c946c4d6f19e940', // 根据项目固定
+  secretKey: 'ohxxzR8x3ssekBJUPmCmFAZPsIYhVXsuAFSDYN7xSEw=', // 根据项目固定
+}
+```
