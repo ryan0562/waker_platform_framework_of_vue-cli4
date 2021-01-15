@@ -10,6 +10,7 @@ import router from '@/router'
 import { logout, imgCaptchaLogin, smsCaptchaLogin, loginNoImgCaptcha } from '@/api/login'
 import { getPermissionByUserId, getUserInfo, getSystemUrlMap } from '@/api/user'
 import { defaultRouterList, permissionRouterList } from '@/router/list'
+import {loginModel} from '@/config' 
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 
 
@@ -109,18 +110,18 @@ function findDefaultRoutePath(accessedRouters) {
   return '/'
 }
 
-
-
-export default {
-  state: {
+const INIT = ()=> {
+  return {
     token: '',
     permissionList: [],
     companyId: '',
     info: {},
-    systemUrl: [],
     _expires: '',
-  },
+  }
+}
 
+export default {
+  state: INIT(),
   mutations: {
     // 设置token
     SET_TOKEN: (state, data) => {
@@ -154,10 +155,6 @@ export default {
     // 设置初始化打开页面
     SET_DEFAULTACCESSROUTE: (state, route) => {
       state.defaultAccessRoute = route
-    },
-    // 设置系统url
-    SET_SYSTEMURL: (state, data) => {
-      state.systemUrl = data
     },
     // 设置菜单
     SET_MEMU: (state, data) => {
@@ -196,14 +193,21 @@ export default {
       })
     },
     // 登出
-    Logout({ commit, state }, code) {
-      if (code !== '1001') {
+    Logout({ commit, state,rootState }, code) {
+      // 非登录超时 和 token存在 才会调用接口
+      if (code !== '1001' && state.token) {
         logout(state.token)
       }
-      open(state.systemUrl[3], '_self')
-      // console.log(state.systemUrl[3])
-      // 删除所有vuex持久化数据
+      // 情况用户数据
+      rootState.user = INIT()
       localStorage.removeItem('vuex-along')
+      // 登录模式处理
+      if(loginModel==='in'){
+        router.replace('/login')
+      } else {
+        const loginUrl = Vue.ls.get('SystemUrlMap')[3]
+        location.replace(loginUrl)
+      }
     },
     // 获取路由权限
     GetPermission({ commit, state }, { userId, companyId }) {
@@ -292,7 +296,8 @@ export default {
           result[item.id] = item.frontpath
         })
         // Vue.ls.set('systemUrlMap', result)
-        commit('SET_SYSTEMURL', result)
+        // commit('SET_SYSTEMURL', result)
+        Vue.ls.set('SystemUrlMap',result)
       } catch (e) {
         throw new Error("获取系统列表出错");
       }

@@ -53,12 +53,13 @@ router.beforeEach(async (to, from, next) => {
 
   // 刷新页面就触发
   if (isInit) {
+    isInit = false
     // 前置获取系统url映射
     await store.dispatch('getSystemUrl')
     // 在url中获取token跟conpanyId
     const { query: { token, companyId } } = to
     // 本地或者url没token就退出登录
-    if ((!token || !token) && (!store.state.user.token || !store.state.user.companyId)) {
+    if (!token && !store.state.user.token) {
       store.dispatch('Logout')
       return
     }
@@ -72,8 +73,6 @@ router.beforeEach(async (to, from, next) => {
         next(to)
       }
     })
-
-    isInit = false
     return
   }
 

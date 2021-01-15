@@ -4,6 +4,9 @@ const idKey = {
   secretKey: 'ohxxzR8x3ssekBJUPmCmFAZPsIYhVXsuAFSDYN7xSEw=', // 根据项目固定
 }
 
+const loginModel = 'out'   // 外部平台登录:'out'  内页登录:'in'
+
 export {
   idKey,
+  loginModel,
 }
