@@ -46,10 +46,13 @@ export function getSmsCpatcha (params) {
 }
 
 // 退出登录
-export function logout () {
+export function logout (token) {
   return axios({
     url: api.logout,
     method: 'get',
+    headers:{
+      Authorization:token
+    }
   })
 }
 

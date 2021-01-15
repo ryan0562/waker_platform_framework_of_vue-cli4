@@ -9,7 +9,6 @@
 import Vue from 'vue'
 import router from './index.js'
 import { defaultRouterList } from './list.js'
-import { ACCESS_TOKEN } from '@/store/mutation-types'
 import store from '@/store/index'
 
 import NProgress from 'nprogress'
@@ -59,21 +58,40 @@ router.beforeEach(async (to, from, next) => {
     // 在url中获取token跟conpanyId
     const { query: { token, companyId } } = to
     // 本地或者url没token就退出登录
-    if (!token && !store.state.user.token) {
-      store.dispatch('Logout')
+
+    if(token && companyId){
+      // 获取权限
+      await store.dispatch('SetUserInfo', { token, companyId })
+      router.addRoutes(store.state.user.routers)
+
+      // 白名单
+      if (whiteList.includes(to.name)) {
+        next(to)
+        return
+      }
+
+      next({ ...to, query: {} })
+      return
+    } else {
+      // 白名单
+      if (whiteList.includes(to.name)) {
+        next()
+        return
+      }
+
+      if (!store.state.user.token) {
+        store.dispatch('Logout')
+        return
+      }
+
+      // 获取权限
+      await store.dispatch('SetUserInfo', { token:store.state.user.token, companyId:store.state.user.companyId })
+      router.addRoutes(store.state.user.routers)
+
+      next(to)
       return
     }
-    // 权限
-    store.dispatch('SetUserInfo', { token, companyId }).then(res => {
-      router.addRoutes(store.state.user.routers)
-      if(token || companyId){
-        next({ ...to, query: {} })
-      }else {
-        //fix:不要删to
-        next(to)
-      }
-    })
-    return
+
   }
 
   // 通用路由直接进入
@@ -82,9 +100,8 @@ router.beforeEach(async (to, from, next) => {
     return
   }
 
-  // 没token直接跳转带登录
-  if (!store.state.user.token || !store.state.user.companyId) {
-    // console.error('登录超时')
+  // // 没token直接跳转登录
+  if (!store.state.user.token) {
     store.dispatch('Logout')
     return
   }

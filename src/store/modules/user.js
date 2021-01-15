@@ -10,8 +10,6 @@ import router from '@/router'
 import { logout, imgCaptchaLogin, smsCaptchaLogin, loginNoImgCaptcha } from '@/api/login'
 import { getPermissionByUserId, getUserInfo, getSystemUrlMap } from '@/api/user'
 import { defaultRouterList, permissionRouterList } from '@/router/list'
-import {loginModel} from '@/config' 
-import { ACCESS_TOKEN } from '@/store/mutation-types'
 
 
 
@@ -201,12 +199,12 @@ export default {
       // 情况用户数据
       rootState.user = INIT()
       localStorage.removeItem('vuex-along')
-      // 登录模式处理
-      if(loginModel==='in'){
-        router.replace('/login')
+
+      // fix:hash模式在login页面时 url无法输入任何路径
+      if(router.currentRoute.name === 'login'){
+        location.reload();
       } else {
-        const loginUrl = Vue.ls.get('SystemUrlMap')[3]
-        location.replace(loginUrl)
+        router.replace('/login');
       }
     },
     // 获取路由权限

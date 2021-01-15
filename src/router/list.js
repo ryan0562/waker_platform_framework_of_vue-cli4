@@ -1,4 +1,5 @@
 import { BasicLayout,PageView } from '@/layout'
+import { loginModel } from '@/config'
 /**
  * @description:  特殊路由字段描述
  * @param {
@@ -21,13 +22,29 @@ let defaultRouterList = [
   {
     path: '/login',
     name: 'login',
-    component: () => import('@/views/login/Login'),
+    component: () => {
+      // 这里处理的好处是本地没有创建login组件页面,无法直接输入url在本地登录
+      if(loginModel==='in'){
+        return import('@/views/login/Login')
+      } else {
+        return import('@/views/login/toLoginCenter')
+      }
+    },
     hidden: true,
   },
   {
     path: '/404',
     component: () => import('@/views/error/404'),
     hidden: true,
+  },
+  {
+    path: '/noPermission',
+    name: 'noPermission',
+    component: () => import('@/views/noPermission/list.vue'),
+    meta: {
+      title: '非权限页面',
+      icon: 'table',
+    },
   },
   // {
   //   path: '*', redirect: '/404', hidden: true,
@@ -103,15 +120,7 @@ let permissionRouterList = [
           },
         ]
       },
-      {
-        path: '/noPermission',
-        name: 'noPermission',
-        component: () => import('@/views/noPermission/list.vue'),
-        meta: {
-          title: '非权限页面',
-          icon: 'table',
-        },
-      },
+      
     ]
   },
 ]
