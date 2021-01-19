@@ -1,16 +1,9 @@
-/*
- * @Description: 
- * @Autor: Waker
- * @Date: 2020-11-16 19:38:14
- * @LastEditors: Waker
- * @LastEditTime: 2020-11-17 10:24:19
- */
 import Vue from 'vue'
 import router from '@/router'
 import { logout, imgCaptchaLogin, smsCaptchaLogin, loginNoImgCaptcha } from '@/api/login'
 import { getPermissionByUserId, getUserInfo, getSystemUrlMap } from '@/api/user'
 import { defaultRouterList, permissionRouterList } from '@/router/list'
-
+import {loginModel} from '@/config';
 
 
 // 判断权限
@@ -182,7 +175,9 @@ export default {
             const result = response.data
             commit('SET_TOKEN', result)
             /* TODO设置为124,方便开发 */
-            commit('SET_COMPANYID', 124)
+            if(loginModel === 'in'){
+              commit('SET_COMPANYID', 124)
+            }
             resolve()
           } else {
             reject(response)
